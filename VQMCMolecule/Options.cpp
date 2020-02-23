@@ -11,7 +11,7 @@ Options::Options()
 	useZ2(true),
 	distance(1.4),
 	deltat(0.005),
-	firstStageGradientDescentSteps(40),
+	firstStageGradientDescentSteps(60),
 	firstThermalSteps(200000),
 	firstStageThermalSteps(2000),
 	firstStageStatsSteps(4000),
@@ -69,7 +69,7 @@ void Options::Load()
 		distance = conf->ReadDouble("/distance", 1.4);
 		deltat = conf->ReadDouble("/deltat", 0.005);
 
-		firstStageGradientDescentSteps = conf->ReadLong("/firstStageGradientDescentSteps", 40);
+		firstStageGradientDescentSteps = conf->ReadLong("/firstStageGradientDescentSteps", 60);
 		firstThermalSteps = conf->ReadLong("/firstThermalSteps", 200000);
 		firstStageThermalSteps = conf->ReadLong("/firstStageThermalSteps", 2000);
 		firstStageStatsSteps = conf->ReadLong("/firstStageStatsSteps", 4000);
