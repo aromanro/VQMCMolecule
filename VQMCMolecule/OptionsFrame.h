@@ -20,7 +20,7 @@
 
 #include "Options.h"
 
-class OptionsFrame : public wxDialog
+class OptionsFrame : public wxPropertySheetDialog
 {
 	wxDECLARE_CLASS(OptionsFrame);
 public:
@@ -29,7 +29,9 @@ public:
 	Options options;
 	
 protected:
-	void CreateControls();
+	wxPanel* CreateMoleculeSettingsPage(wxBookCtrlBase* parent);
+	wxPanel* CreateComputationSettingsPage(wxBookCtrlBase* parent);
+	wxPanel* CreateStepsSettingsPage(wxBookCtrlBase* parent);
 
 	virtual bool TransferDataFromWindow() override;
 

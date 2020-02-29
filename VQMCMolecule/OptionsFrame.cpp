@@ -14,24 +14,41 @@
 wxDECLARE_APP(VQMCMoleculeApp);
 
 
-wxIMPLEMENT_CLASS(OptionsFrame, wxDialog);
+wxIMPLEMENT_CLASS(OptionsFrame, wxPropertySheetDialog);
 
-wxBEGIN_EVENT_TABLE(OptionsFrame, wxDialog)
+wxBEGIN_EVENT_TABLE(OptionsFrame, wxPropertySheetDialog)
 EVT_CLOSE(OptionsFrame::OnClose)
 wxEND_EVENT_TABLE()
 
 OptionsFrame::OptionsFrame(const Options& opt, const wxString & title, wxWindow* parent)
-	: wxDialog(parent, wxID_ANY, title, wxDefaultPosition, wxSize(400, 250)) 
 {
+	SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY);
+
 	options = opt;
-	CreateControls();
-	Layout();
+	Create(parent, wxID_ANY, title, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | (int)wxPlatform::IfNot(wxOS_WINDOWS_CE, wxRESIZE_BORDER));
+
+	CreateButtons(wxOK | wxCANCEL);
+
+	wxBookCtrlBase* notebook = GetBookCtrl();
+
+
+	wxPanel* settingsPage = CreateMoleculeSettingsPage(notebook);
+	notebook->AddPage(settingsPage, "Molecule", true);
+
+	settingsPage = CreateComputationSettingsPage(notebook);
+	notebook->AddPage(settingsPage, "Computation");
+
+	settingsPage = CreateStepsSettingsPage(notebook);
+	notebook->AddPage(settingsPage, "Steps");
+
+	LayoutDialog();
+
 	Centre();
 }
 
 bool OptionsFrame::TransferDataFromWindow()
 {
-	if (!wxDialog::TransferDataFromWindow()) return false;
+	if (!wxPropertySheetDialog::TransferDataFromWindow()) return false;
 	
 
 
@@ -44,40 +61,89 @@ void OptionsFrame::OnClose(wxCloseEvent& event)
 }
 
 
-void OptionsFrame::CreateControls()
+
+wxPanel* OptionsFrame::CreateMoleculeSettingsPage(wxBookCtrlBase* parent)
 {
-	// box to contain them all
-	wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
-	SetSizer(vbox);	
-
-	// box with margin to contain option controls
-	wxBoxSizer* boxSizer = new wxBoxSizer(wxVERTICAL);
-	vbox->Add(boxSizer, 0, wxALIGN_CENTER_HORIZONTAL| wxGROW | wxALL, 5);
-
-	// *****************************************************************
-	// Controls
-
-	wxBoxSizer* box = new wxBoxSizer(wxHORIZONTAL);
-	boxSizer->Add(box, 0, wxGROW|wxALL, 5);
+	wxPanel* panel = new wxPanel(parent, wxID_ANY | wxGROW);
 
 
-	// *****************************************************************
-	// Validators
+	wxBoxSizer* topSizer = new wxBoxSizer(wxVERTICAL);
+	wxBoxSizer* item0 = new wxBoxSizer(wxVERTICAL);
 
+	// ***********************************************************************************
 
-	// *****************************************************************
+	wxBoxSizer* itemSizer = new wxBoxSizer(wxHORIZONTAL);
+
+	// add controls
 	
-	wxStaticLine* line = new wxStaticLine(this, wxID_STATIC, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL);
-	boxSizer->Add(line, 0, wxGROW|wxALL, 5);
+	item0->Add(itemSizer, 0, wxALL | wxGROW, 0);
 
-	// bottom box with ok & cancel buttons
-	wxBoxSizer *hbox = new wxBoxSizer(wxHORIZONTAL);
-	
-	wxButton *okButton = new wxButton(this, wxID_OK, "Ok", wxDefaultPosition, wxSize(70, 30));
-	wxButton *closeButton = new wxButton(this, wxID_CANCEL, "Cancel", wxDefaultPosition, wxSize(70, 30));
+	// and so on...
 
-	hbox->Add(okButton, 1);
-	hbox->Add(closeButton, 1, wxLEFT, 5);
+	// *************************
 
-	vbox->Add(hbox, 0, wxALIGN_CENTER | wxTOP | wxBOTTOM, 10);
+	topSizer->Add(item0, 0, wxALL | wxGROW, 5);
+	panel->SetSizerAndFit(topSizer);
+
+
+	return panel;
 }
+
+
+wxPanel* OptionsFrame::CreateComputationSettingsPage(wxBookCtrlBase* parent)
+{
+	wxPanel* panel = new wxPanel(parent, wxID_ANY | wxGROW);
+
+
+	wxBoxSizer* topSizer = new wxBoxSizer(wxVERTICAL);
+	wxBoxSizer* item0 = new wxBoxSizer(wxVERTICAL);
+
+	// ***********************************************************************************
+
+	wxBoxSizer* itemSizer = new wxBoxSizer(wxHORIZONTAL);
+
+	// add controls
+
+	item0->Add(itemSizer, 0, wxALL | wxGROW, 0);
+
+	// and so on...
+
+
+	// *************************
+
+	topSizer->Add(item0, 0, wxALL | wxGROW, 5);
+	panel->SetSizerAndFit(topSizer);
+
+
+	return panel;
+}
+
+
+wxPanel* OptionsFrame::CreateStepsSettingsPage(wxBookCtrlBase* parent)
+{
+	wxPanel* panel = new wxPanel(parent, wxID_ANY | wxGROW);
+
+
+	wxBoxSizer* topSizer = new wxBoxSizer(wxVERTICAL);
+	wxBoxSizer* item0 = new wxBoxSizer(wxVERTICAL);
+
+	// ***********************************************************************************
+
+	wxBoxSizer* itemSizer = new wxBoxSizer(wxHORIZONTAL);
+
+	// add controls
+
+	item0->Add(itemSizer, 0, wxALL | wxGROW, 0);
+
+	// and so on...
+
+
+	// *************************
+
+	topSizer->Add(item0, 0, wxALL | wxGROW, 5);
+	panel->SetSizerAndFit(topSizer);
+
+
+	return panel;
+}
+
