@@ -6,7 +6,7 @@ Options::Options()
 	: 
 	nrThreads(20),
 	nrWalkers(100),
-	basis(1),
+	basis(0),
 	Z1(1), Z2(1),
 	useZ2(true),
 	distance(1.4),
@@ -61,7 +61,7 @@ void Options::Load()
 	{
 		nrThreads = conf->ReadLong("/nrThreads", 20);
 		nrWalkers = conf->ReadLong("/nrWalkers", 100);
-		basis = conf->ReadLong("/basis", 1);
+		basis = conf->ReadLong("/basis", 0);
 		Z1 = conf->ReadLong("/Z1", 1);
 		Z2 = conf->ReadLong("/Z2", 1);
 		useZ2 = conf->ReadLong("/useZ2", 1) == 1;
