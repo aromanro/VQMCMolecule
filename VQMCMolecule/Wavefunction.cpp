@@ -112,16 +112,16 @@ void Wavefunction::Init(const Systems::Molecule& molecule, Random& random, doubl
         // merge orbitals
         for (unsigned int i = 0; i < start && orbitals.size() < curParticle; ++i)
         {
-            unsigned int index1 = firstAtomOrbsToMerge.size() == start ? i : start + i;
-            unsigned int index2 = secondAtomOrbsToMerge.size() == start ? i : start + i;
+            const unsigned int index1 = firstAtomOrbsToMerge.size() == start ? i : start + i;
+            const unsigned int index2 = secondAtomOrbsToMerge.size() == start ? i : start + i;
 
             orbitals.push_back(Orbitals::VQMCOrbital(firstAtomOrbsToMerge[index1], secondAtomOrbsToMerge[index2], false));
         }
 
         for (unsigned int i = 0; i < start && orbitals.size() < curParticle; ++i)
         {
-            unsigned int index1 = firstAtomOrbsToMerge.size() == start ? i : start + i;
-            unsigned int index2 = secondAtomOrbsToMerge.size() == start ? i : start + i;
+            const unsigned int index1 = firstAtomOrbsToMerge.size() == start ? i : start + i;
+            const unsigned int index2 = secondAtomOrbsToMerge.size() == start ? i : start + i;
 
             orbitals.push_back(Orbitals::VQMCOrbital(firstAtomOrbsToMerge[index1], secondAtomOrbsToMerge[index2], true));
         }
@@ -198,16 +198,16 @@ void Wavefunction::Init(const Systems::Molecule& molecule, Random& random, doubl
         // merge orbitals
         for (unsigned int i = 0; i < start && orbitals.size() < static_cast<unsigned long long int>(molecule.alphaElectrons) + curParticle; ++i)
         {
-            unsigned int index1 = firstAtomOrbsToMerge.size() == start ? i : start + i;
-            unsigned int index2 = secondAtomOrbsToMerge.size() == start ? i : start + i;
+            const unsigned int index1 = firstAtomOrbsToMerge.size() == start ? i : start + i;
+            const unsigned int index2 = secondAtomOrbsToMerge.size() == start ? i : start + i;
 
             orbitals.push_back(Orbitals::VQMCOrbital(firstAtomOrbsToMerge[index1], secondAtomOrbsToMerge[index2], false));
         }
 
         for (unsigned int i = 0; i < start && orbitals.size() < static_cast<unsigned long long int>(molecule.alphaElectrons) + curParticle; ++i)
         {
-            unsigned int index1 = firstAtomOrbsToMerge.size() == start ? i : start + i;
-            unsigned int index2 = secondAtomOrbsToMerge.size() == start ? i : start + i;
+            const unsigned int index1 = firstAtomOrbsToMerge.size() == start ? i : start + i;
+            const unsigned int index2 = secondAtomOrbsToMerge.size() == start ? i : start + i;
 
             orbitals.push_back(Orbitals::VQMCOrbital(firstAtomOrbsToMerge[index1], secondAtomOrbsToMerge[index2], true));
         }
