@@ -26,6 +26,13 @@
 #define LAST_STEP_THERMAL_STEPS_ID 211
 #define LAST_STEP_STATS_STEPS_ID 212
 
+#define NR_THREADS_ID 213
+#define NR_WALKERS_ID 214
+#define BASIS_ID      215
+#define DELTAT_ID     216
+#define GRAD_PARAM_ID 217
+
+
 
 wxDECLARE_APP(VQMCMoleculeApp);
 
@@ -120,12 +127,81 @@ wxPanel* OptionsFrame::CreateComputationSettingsPage(wxBookCtrlBase* parent)
 
 	// add controls
 
+	wxStaticText* label = new wxStaticText(panel, wxID_STATIC, "Nr threads:", wxDefaultPosition, wxSize(100, -1), wxALIGN_RIGHT);
+	itemSizer->Add(label, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+	wxString str = wxString::Format(wxT("%d"), options.nrThreads);
+	wxTextCtrl* nrThreadsCtrl = new wxTextCtrl(panel, NR_THREADS_ID, str, wxDefaultPosition, wxSize(80, -1), 0);
+	itemSizer->Add(nrThreadsCtrl, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL | wxGROW, 5);
+
+	label = new wxStaticText(panel, wxID_STATIC, "Nr walkers:", wxDefaultPosition, wxSize(80, -1), wxALIGN_RIGHT);
+	itemSizer->Add(label, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+	str = wxString::Format(wxT("%d"), options.nrWalkers);
+	wxTextCtrl* nrWalkersCtrl = new wxTextCtrl(panel, NR_WALKERS_ID, str, wxDefaultPosition, wxSize(80, -1), 0);
+	itemSizer->Add(nrWalkersCtrl, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL | wxGROW, 5);
+
+
 	item0->Add(itemSizer, 0, wxALL | wxGROW, 0);
 
 	// and so on...
 
+	itemSizer = new wxBoxSizer(wxHORIZONTAL);
+
+	label = new wxStaticText(panel, wxID_STATIC, "Gradient descent:", wxDefaultPosition, wxSize(100, -1), wxALIGN_RIGHT);
+	itemSizer->Add(label, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+	str = wxString::Format(wxT("%g"), options.gradDescParam);
+	wxTextCtrl* gradCtrl = new wxTextCtrl(panel, GRAD_PARAM_ID, str, wxDefaultPosition, wxSize(100, -1), 0);
+	itemSizer->Add(gradCtrl, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL | wxGROW, 5);
+
+
+	label = new wxStaticText(panel, wxID_STATIC, "Delta t:", wxDefaultPosition, wxSize(100, -1), wxALIGN_RIGHT);
+	itemSizer->Add(label, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+	str = wxString::Format(wxT("%g"), options.deltat);
+	wxTextCtrl* deltatCtrl = new wxTextCtrl(panel, DELTAT_ID, str, wxDefaultPosition, wxSize(100, -1), 0);
+	itemSizer->Add(deltatCtrl, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL | wxGROW, 5);
+
+
+	item0->Add(itemSizer, 0, wxALL | wxGROW, 0);
+
+
+
+	itemSizer = new wxBoxSizer(wxHORIZONTAL);
+
+	wxArrayString choices;
+	choices.Add("STO3G");
+	choices.Add("STO6G");
+	wxRadioBox* m_radioBox = new wxRadioBox(panel, BASIS_ID, "Basis", wxDefaultPosition, wxDefaultSize, choices, 2, wxRA_VERTICAL);
+	itemSizer->Add(m_radioBox, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+	item0->Add(itemSizer, 0, wxGROW | wxALL, 0);
 
 	// *************************
+	// Validators
+
+
+	wxIntegerValidator<int> val1(&options.nrThreads, wxNUM_VAL_DEFAULT);
+	val1.SetRange(0, 256);
+	nrThreadsCtrl->SetValidator(val1);
+
+	wxIntegerValidator<int> val2(&options.nrWalkers, wxNUM_VAL_DEFAULT);
+	val2.SetRange(0, 1000);
+	nrWalkersCtrl->SetValidator(val2);
+
+
+	wxFloatingPointValidator<double> v1(&options.gradDescParam, wxNUM_VAL_DEFAULT);
+	v1.SetRange(0, 10.);
+	v1.SetPrecision(2);
+	gradCtrl->SetValidator(v1);
+
+	wxFloatingPointValidator<double> v2(&options.deltat, wxNUM_VAL_DEFAULT);
+	v2.SetRange(0, 1.);
+	v2.SetPrecision(3);
+	deltatCtrl->SetValidator(v2);
+
+	m_radioBox->SetValidator(wxGenericValidator(&options.basis));
 
 	topSizer->Add(item0, 0, wxALL | wxGROW, 5);
 	panel->SetSizerAndFit(topSizer);
