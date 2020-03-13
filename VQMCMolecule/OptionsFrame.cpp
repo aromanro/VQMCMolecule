@@ -31,6 +31,7 @@
 #define BASIS_ID      215
 #define DELTAT_ID     216
 #define GRAD_PARAM_ID 217
+#define BETA_ID       218
 
 
 
@@ -166,7 +167,16 @@ wxPanel* OptionsFrame::CreateComputationSettingsPage(wxBookCtrlBase* parent)
 
 	item0->Add(itemSizer, 0, wxALL | wxGROW, 0);
 
+	itemSizer = new wxBoxSizer(wxHORIZONTAL);
 
+	label = new wxStaticText(panel, wxID_STATIC, "Beta (Jastrow):", wxDefaultPosition, wxSize(100, -1), wxALIGN_RIGHT);
+	itemSizer->Add(label, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+	str = wxString::Format(wxT("%g"), options.beta);
+	wxTextCtrl* betaCtrl = new wxTextCtrl(panel, BETA_ID, str, wxDefaultPosition, wxSize(100, -1), 0);
+	itemSizer->Add(betaCtrl, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL | wxGROW, 5);
+
+	item0->Add(itemSizer, 0, wxALL | wxGROW, 0);
 
 	itemSizer = new wxBoxSizer(wxHORIZONTAL);
 
@@ -201,11 +211,15 @@ wxPanel* OptionsFrame::CreateComputationSettingsPage(wxBookCtrlBase* parent)
 	v2.SetPrecision(3);
 	deltatCtrl->SetValidator(v2);
 
+	wxFloatingPointValidator<double> v3(&options.beta, wxNUM_VAL_DEFAULT);
+	v3.SetRange(0, 10.);
+	v3.SetPrecision(2);
+	deltatCtrl->SetValidator(v3);
+
 	m_radioBox->SetValidator(wxGenericValidator(&options.basis));
 
 	topSizer->Add(item0, 0, wxALL | wxGROW, 5);
 	panel->SetSizerAndFit(topSizer);
-
 
 	return panel;
 }

@@ -24,6 +24,7 @@ Options::Options()
 	lastStepThermalSteps(32000),
 	lastStepStatsSteps(64000),
 	gradDescParam(0.3),
+	beta(1.),
 	m_fileconfig(nullptr)
 {
 }
@@ -83,6 +84,7 @@ void Options::Load()
 		lastStepStatsSteps = conf->ReadLong("/lastStepStatsSteps", 64000);
 
 		gradDescParam = conf->ReadDouble("/gradDescParam", 0.3);
+		beta = conf->ReadDouble("beta", 1.);
 	}
 	Close();
 }
@@ -117,6 +119,7 @@ void Options::Save()
 		conf->Write("/lastStepStatsSteps", static_cast<long int>(lastStepStatsSteps));
 
 		conf->Write("/gradDescParam", gradDescParam);
+		conf->Write("/beta", beta);
 	}
 
 	if (m_fileconfig)

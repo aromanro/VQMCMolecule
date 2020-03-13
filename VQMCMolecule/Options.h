@@ -52,6 +52,7 @@ public:
 		lastStepThermalSteps(other.lastStepThermalSteps),
 		lastStepStatsSteps(other.lastStepStatsSteps),
 		gradDescParam(other.gradDescParam),
+		beta(other.beta),
 		m_fileconfig(nullptr)
 	{
 	}
@@ -88,6 +89,7 @@ public:
 		lastStepStatsSteps = other.lastStepStatsSteps;
 
 		gradDescParam = other.gradDescParam;
+		beta = other.beta;
 
 		m_fileconfig = nullptr;
 
@@ -128,6 +130,7 @@ public:
 	int lastStepStatsSteps;
 
 	double gradDescParam;
+	double beta;
 
 protected:
 	void Open();

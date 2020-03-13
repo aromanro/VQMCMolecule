@@ -67,7 +67,7 @@ void VQMCMolecule::Compute(const Options& opt)
     int thermalSteps = opt.firstThermalSteps * NrE;
     int cycleSteps = opt.firstStageStatsSteps * NrE;
 
-    double beta = 1.;
+    double beta = opt.beta;
 
     const double cnst = opt.gradDescParam; // for gradient descent
 
