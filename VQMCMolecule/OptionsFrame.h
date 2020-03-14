@@ -19,6 +19,7 @@
 
 
 #include "Options.h"
+#include "Basis.h"
 
 class OptionsFrame : public wxPropertySheetDialog
 {
@@ -27,15 +28,25 @@ public:
 	OptionsFrame(const Options& opt, const wxString& title, wxWindow* parent = NULL);
 
 	Options options;
+
+
+	Chemistry::Basis basisSTO3G;
+	Chemistry::Basis basisSTO6G;
+
+	int sel1;
+	int sel2;
 	
 protected:
 	wxPanel* CreateMoleculeSettingsPage(wxBookCtrlBase* parent);
 	wxPanel* CreateComputationSettingsPage(wxBookCtrlBase* parent);
 	wxPanel* CreateStepsSettingsPage(wxBookCtrlBase* parent);
 
+	std::vector<wxString> GetAtoms();
+
 	virtual bool TransferDataFromWindow() override;
 
 	void OnClose(wxCloseEvent& event);
+	void OnBasisChoose(wxCommandEvent& event);
 
 	wxDECLARE_EVENT_TABLE();
 };

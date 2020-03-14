@@ -10,6 +10,8 @@
 #include "OptionsFrame.h"
 #include "VQMCMoleculeFrame.h"
 
+#include "ChemUtils.h"
+
 #define GRADIENT_DESCENT_FIRST_STAGE_STEPS_ID 201
 #define GRADIENT_DESCENT_SECOND_STAGE_STEPS_ID 202
 #define GRADIENT_DESCENT_THIRD_STAGE_STEPS_ID 203
@@ -33,6 +35,10 @@
 #define GRAD_PARAM_ID 217
 #define BETA_ID       218
 
+#define FIRST_ATOM_ID 219
+#define SECOND_ATOM_ID 220
+#define USE_Z2_ID      221
+#define DISTANCE_ID    222
 
 
 wxDECLARE_APP(VQMCMoleculeApp);
@@ -42,10 +48,15 @@ wxIMPLEMENT_CLASS(OptionsFrame, wxPropertySheetDialog);
 
 wxBEGIN_EVENT_TABLE(OptionsFrame, wxPropertySheetDialog)
 EVT_CLOSE(OptionsFrame::OnClose)
+EVT_BUTTON(BASIS_ID, OptionsFrame::OnBasisChoose)
 wxEND_EVENT_TABLE()
 
 OptionsFrame::OptionsFrame(const Options& opt, const wxString & title, wxWindow* parent)
+	: sel1(0), sel2(0)
 {
+	basisSTO3G.Load("sto3g.txt");
+	basisSTO6G.Load("sto6g.txt");
+
 	SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY);
 
 	options = opt;
@@ -74,7 +85,33 @@ bool OptionsFrame::TransferDataFromWindow()
 {
 	if (!wxPropertySheetDialog::TransferDataFromWindow()) return false;
 	
+	int s = 0;
+	if (options.basis)
+	{
+		for (const auto& atom : basisSTO3G.atoms)
+		{
+			if (sel1 == s)
+				options.Z1 = atom.Z;
 
+			if (sel2 == s)
+				options.Z2 = atom.Z;
+
+			++s;
+		}
+	}
+	else
+	{
+		for (const auto& atom : basisSTO6G.atoms)
+		{
+			if (sel1 == s)
+				options.Z1 = atom.Z;
+
+			if (sel2 == s)
+				options.Z2 = atom.Z;
+
+			++s;
+		}
+	}
 
 	return true;
 }
@@ -84,6 +121,45 @@ void OptionsFrame::OnClose(wxCloseEvent& event)
 	event.Skip();
 }
 
+
+std::vector<wxString> OptionsFrame::GetAtoms()
+{
+	std::vector<wxString> strings;
+
+	int s = 0;
+	if (options.basis)
+	{
+		for (const auto& atom : basisSTO3G.atoms)
+		{
+			strings.push_back(Chemistry::ChemUtils::GetAtomNameForZ(atom.Z));
+
+			if (atom.Z == options.Z1)
+				sel1 = s;
+
+			if (atom.Z == options.Z2)
+				sel2 = s;
+
+			++s;
+		}
+	}
+	else
+	{
+		for (const auto& atom : basisSTO6G.atoms)
+		{
+			strings.push_back(Chemistry::ChemUtils::GetAtomNameForZ(atom.Z));
+
+			if (atom.Z == options.Z1)
+				sel1 = s;
+
+			if (atom.Z == options.Z2)
+				sel2 = s;
+
+			++s;
+		}
+	}
+
+	return strings;
+}
 
 
 wxPanel* OptionsFrame::CreateMoleculeSettingsPage(wxBookCtrlBase* parent)
@@ -100,11 +176,63 @@ wxPanel* OptionsFrame::CreateMoleculeSettingsPage(wxBookCtrlBase* parent)
 
 	// add controls
 	
+	wxStaticText* label = new wxStaticText(panel, wxID_STATIC, "First atom:", wxDefaultPosition, wxSize(100, -1), wxALIGN_RIGHT);
+	itemSizer->Add(label, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+	std::vector<wxString> strings = GetAtoms();
+
+	wxChoice* atom1Choice = new wxChoice(panel, FIRST_ATOM_ID, wxDefaultPosition, wxSize(100, -1), strings.size(), strings.data(), 0);
+
+	atom1Choice->SetSelection(sel1);
+	itemSizer->Add(atom1Choice, 1, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL | wxGROW, 5);
+
+
+	label = new wxStaticText(panel, wxID_STATIC, "Second atom:", wxDefaultPosition, wxSize(100, -1), wxALIGN_RIGHT);
+	itemSizer->Add(label, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+	wxChoice* atom2Choice = new wxChoice(panel, FIRST_ATOM_ID, wxDefaultPosition, wxSize(100, -1), strings.size(), strings.data(), 0);
+
+	atom2Choice->SetSelection(sel2);
+	itemSizer->Add(atom2Choice, 1, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL | wxGROW, 5);
+
+
 	item0->Add(itemSizer, 0, wxALL | wxGROW, 0);
 
 	// and so on...
 
+	itemSizer = new wxBoxSizer(wxHORIZONTAL);
+
+	wxCheckBox* checkBox = new wxCheckBox(panel, USE_Z2_ID, "Compute molecule (unchecked means computing only the atom selected in the first combo)");
+	itemSizer->Add(checkBox, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL);
+
+	item0->Add(itemSizer, 0, wxALL | wxGROW, 0);
+
+	itemSizer = new wxBoxSizer(wxHORIZONTAL);
+
+	label = new wxStaticText(panel, wxID_STATIC, "Distance:", wxDefaultPosition, wxSize(100, -1), wxALIGN_RIGHT);
+	itemSizer->Add(label, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+	wxString str = wxString::Format(wxT("%g"), options.distance);
+	wxTextCtrl* distanceCtrl = new wxTextCtrl(panel, DISTANCE_ID, str, wxDefaultPosition, wxSize(100, -1), 0);
+	itemSizer->Add(distanceCtrl, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL | wxGROW, 5);
+
+	item0->Add(itemSizer, 0, wxALL | wxGROW, 0);
+
+
 	// *************************
+	// Validators
+
+	atom1Choice->SetValidator(wxGenericValidator(&sel1));
+	atom2Choice->SetValidator(wxGenericValidator(&sel2));
+
+	checkBox->SetValidator(wxGenericValidator(&options.useZ2));
+
+	wxFloatingPointValidator<double> v1(&options.distance, wxNUM_VAL_DEFAULT);
+	v1.SetRange(0, 10.);
+	v1.SetPrecision(3);
+	distanceCtrl->SetValidator(v1);
+
+	// *********************************
 
 	topSizer->Add(item0, 0, wxALL | wxGROW, 5);
 	panel->SetSizerAndFit(topSizer);
@@ -429,3 +557,17 @@ wxPanel* OptionsFrame::CreateStepsSettingsPage(wxBookCtrlBase* parent)
 	return panel;
 }
 
+void OptionsFrame::OnBasisChoose(wxCommandEvent& /*event*/)
+{
+	TransferDataFromWindow();
+
+	std::vector<wxString> atoms = GetAtoms();
+
+	wxChoice* atomChoice = (wxChoice*)FindWindow(FIRST_ATOM_ID);
+	atomChoice->Set(atoms.size(), atoms.data());
+	atomChoice->SetSelection(sel1);
+
+	atomChoice = (wxChoice*)FindWindow(SECOND_ATOM_ID);
+	atomChoice->Set(atoms.size(), atoms.data());
+	atomChoice->SetSelection(sel2);
+}

@@ -27,6 +27,7 @@ Options::Options()
 	beta(1.),
 	m_fileconfig(nullptr)
 {
+
 }
 
 

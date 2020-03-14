@@ -132,6 +132,7 @@ public:
 	double gradDescParam;
 	double beta;
 
+
 protected:
 	void Open();
 	void Close();
