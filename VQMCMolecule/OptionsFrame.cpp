@@ -48,7 +48,8 @@ wxIMPLEMENT_CLASS(OptionsFrame, wxPropertySheetDialog);
 
 wxBEGIN_EVENT_TABLE(OptionsFrame, wxPropertySheetDialog)
 EVT_CLOSE(OptionsFrame::OnClose)
-EVT_BUTTON(BASIS_ID, OptionsFrame::OnBasisChoose)
+EVT_CHECKBOX(USE_Z2_ID, OptionsFrame::OnUseZ2)
+EVT_RADIOBOX(BASIS_ID, OptionsFrame::OnBasisChoose)
 wxEND_EVENT_TABLE()
 
 OptionsFrame::OptionsFrame(const Options& opt, const wxString & title, wxWindow* parent)
@@ -111,6 +112,14 @@ bool OptionsFrame::TransferDataFromWindow()
 
 			++s;
 		}
+	}
+
+
+	if (options.useZ2 && options.distance < 0.01)
+	{
+		wxMessageBox("Please enter a bigger distance between atoms", "Validation", wxOK | wxICON_INFORMATION, this);
+
+		return false;
 	}
 
 	return true;
@@ -190,7 +199,7 @@ wxPanel* OptionsFrame::CreateMoleculeSettingsPage(wxBookCtrlBase* parent)
 	label = new wxStaticText(panel, wxID_STATIC, "Second atom:", wxDefaultPosition, wxSize(100, -1), wxALIGN_RIGHT);
 	itemSizer->Add(label, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	wxChoice* atom2Choice = new wxChoice(panel, FIRST_ATOM_ID, wxDefaultPosition, wxSize(100, -1), strings.size(), strings.data(), 0);
+	wxChoice* atom2Choice = new wxChoice(panel, SECOND_ATOM_ID, wxDefaultPosition, wxSize(100, -1), strings.size(), strings.data(), 0);
 
 	atom2Choice->SetSelection(sel2);
 	itemSizer->Add(atom2Choice, 1, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL | wxGROW, 5);
@@ -215,6 +224,13 @@ wxPanel* OptionsFrame::CreateMoleculeSettingsPage(wxBookCtrlBase* parent)
 	wxString str = wxString::Format(wxT("%g"), options.distance);
 	wxTextCtrl* distanceCtrl = new wxTextCtrl(panel, DISTANCE_ID, str, wxDefaultPosition, wxSize(100, -1), 0);
 	itemSizer->Add(distanceCtrl, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL | wxGROW, 5);
+
+	if (!options.useZ2)
+	{
+		distanceCtrl->Enable(false);
+		atom2Choice->Enable(false);
+	}
+
 
 	item0->Add(itemSizer, 0, wxALL | wxGROW, 0);
 
@@ -570,4 +586,14 @@ void OptionsFrame::OnBasisChoose(wxCommandEvent& /*event*/)
 	atomChoice = (wxChoice*)FindWindow(SECOND_ATOM_ID);
 	atomChoice->Set(atoms.size(), atoms.data());
 	atomChoice->SetSelection(sel2);
+}
+
+void OptionsFrame::OnUseZ2(wxCommandEvent& /*event*/)
+{
+	TransferDataFromWindow();
+
+	wxChoice* atomChoice = (wxChoice*)FindWindow(SECOND_ATOM_ID);
+	wxTextCtrl* distanceCtrl = (wxTextCtrl*)FindWindow(DISTANCE_ID);
+	atomChoice->Enable(options.useZ2);
+	distanceCtrl->Enable(options.useZ2);
 }

@@ -46,6 +46,7 @@ protected:
 	virtual bool TransferDataFromWindow() override;
 
 	void OnClose(wxCloseEvent& event);
+	void OnUseZ2(wxCommandEvent& event);
 	void OnBasisChoose(wxCommandEvent& event);
 
 	wxDECLARE_EVENT_TABLE();
