@@ -122,6 +122,55 @@ bool OptionsFrame::TransferDataFromWindow()
 		return false;
 	}
 
+	if (options.firstStageGradientDescentSteps + options.secondStageGradientDescentSteps + options.thirdStageGradientDescentSteps < 1)
+	{
+		wxMessageBox("You need to have at least one gradient descent step", "Validation", wxOK | wxICON_INFORMATION, this);
+
+		return false;
+	}
+
+	if (options.nrThreads < 1)
+	{
+		wxMessageBox("At least one computing thread is needed", "Validation", wxOK | wxICON_INFORMATION, this);
+
+		return false;
+	}
+
+	if (options.nrWalkers < 1)
+	{
+		wxMessageBox("At least one walker is needed", "Validation", wxOK | wxICON_INFORMATION, this);
+
+		return false;
+	}
+
+	if (options.beta < 0.3)
+	{
+		wxMessageBox("Beta should be bigger than 0.3", "Validation", wxOK | wxICON_INFORMATION, this);
+
+		return false;
+	}
+
+	if (options.gradDescParam < 0.1)
+	{
+		wxMessageBox("The gradient descent parameter should be bigger than 0.1", "Validation", wxOK | wxICON_INFORMATION, this);
+
+		return false;
+	}
+
+	if (options.deltat > 0.3 || options.deltat < 0.001)
+	{
+		wxMessageBox("Please enter a value for delta t smaller than 0.3 and bigger than 0.001", "Validation", wxOK | wxICON_INFORMATION, this);
+
+		return false;
+	}
+
+	if (options.firstThermalSteps < 100000)
+	{
+		wxMessageBox("First thermal steps should be over 100000", "Validation", wxOK | wxICON_INFORMATION, this);
+
+		return false;
+	}
+
 	return true;
 }
 
@@ -358,7 +407,7 @@ wxPanel* OptionsFrame::CreateComputationSettingsPage(wxBookCtrlBase* parent)
 	wxFloatingPointValidator<double> v3(&options.beta, wxNUM_VAL_DEFAULT);
 	v3.SetRange(0, 10.);
 	v3.SetPrecision(2);
-	deltatCtrl->SetValidator(v3);
+	betaCtrl->SetValidator(v3);
 
 	m_radioBox->SetValidator(wxGenericValidator(&options.basis));
 
