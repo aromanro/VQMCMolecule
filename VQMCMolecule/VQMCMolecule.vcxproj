@@ -165,7 +165,9 @@
     <ClCompile Include="Basis.cpp" />
     <ClCompile Include="ChemUtils.cpp" />
     <ClCompile Include="ContractedGaussianOrbital.cpp" />
+    <ClCompile Include="GaussianIntegral.cpp" />
     <ClCompile Include="GaussianOrbital.cpp" />
+    <ClCompile Include="GaussianOverlap.cpp" />
     <ClCompile Include="MathUtils.cpp" />
     <ClCompile Include="Molecule.cpp" />
     <ClCompile Include="Options.cpp" />
@@ -186,7 +188,9 @@
     <ClInclude Include="Basis.h" />
     <ClInclude Include="ChemUtils.h" />
     <ClInclude Include="ContractedGaussianOrbital.h" />
+    <ClInclude Include="GaussianIntegral.h" />
     <ClInclude Include="GaussianOrbital.h" />
+    <ClInclude Include="GaussianOverlap.h" />
     <ClInclude Include="MathUtils.h" />
     <ClInclude Include="Molecule.h" />
     <ClInclude Include="Options.h" />
