@@ -7,6 +7,8 @@
 #include "Molecule.h"
 #include "VQMCOrbital.h"
 
+#include "GaussianOverlap.h"
+
 class Wavefunction
 {
 public:
@@ -41,7 +43,12 @@ public:
 	std::vector<Vector3D<double>> currentParticles;
 
 protected:
+	double getOverlap(const Systems::AtomWithShells& atom1, const Orbitals::ContractedGaussianOrbital& orbital1, const Systems::AtomWithShells& atom2, const Orbitals::ContractedGaussianOrbital& orbital2, bool extendForKinetic = false);
+	double getOverlap(const Systems::AtomWithShells& atom1, const Orbitals::GaussianOrbital& gaussian1, const Systems::AtomWithShells& atom2, const Orbitals::GaussianOrbital& gaussian2, bool extendForKinetic = false);
+
 	std::vector<Orbitals::VQMCOrbital> orbitals;
+
+	std::map < std::tuple<unsigned int, unsigned int, double, double>, GaussianIntegrals::GaussianOverlap> overlapIntegralsMap;
 
 	Eigen::MatrixXd SpinUpInvSlater;
 	Eigen::MatrixXd SpinDownInvSlater;

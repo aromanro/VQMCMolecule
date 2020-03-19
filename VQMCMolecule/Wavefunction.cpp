@@ -213,6 +213,8 @@ void Wavefunction::Init(const Systems::Molecule& molecule, Random& random, doubl
         }
     }
 
+    overlapIntegralsMap.clear();
+
     assert(curParticle == molecule.betaElectrons);
 
     SpinUpInvSlater.resize(molecule.alphaElectrons, molecule.alphaElectrons);
@@ -515,4 +517,61 @@ double Wavefunction::log_deriv_beta_wf(double beta) const
     }
 
     return val;
+}
+
+
+//************************************************************************************************************************************************************
+// OVERLAP integrals
+//************************************************************************************************************************************************************
+
+double Wavefunction::getOverlap(const Systems::AtomWithShells& atom1, const Orbitals::GaussianOrbital& gaussian1, const Systems::AtomWithShells& atom2, const Orbitals::GaussianOrbital& gaussian2, bool extendForKinetic)
+{
+    std::tuple<unsigned int, unsigned int, double, double > params(gaussian1.shellID, gaussian2.shellID, gaussian1.alpha, gaussian2.alpha);
+
+    auto it = overlapIntegralsMap.find(params);
+    if (overlapIntegralsMap.end() != it) return it->second.getOverlap(gaussian1.angularMomentum, gaussian2.angularMomentum);
+
+
+    // unfortunately it's not yet calculated
+    GaussianIntegrals::GaussianOverlap overlap;
+    auto result = overlapIntegralsMap.insert(std::make_pair(params, overlap));
+
+
+
+    Orbitals::QuantumNumbers::QuantumNumbers maxQN1(0, 0, 0), maxQN2(0, 0, 0);
+
+    // now find the max quantum numbers
+
+    atom1.GetMaxQN(gaussian1.alpha, maxQN1);
+    atom2.GetMaxQN(gaussian2.alpha, maxQN2);
+
+    if (extendForKinetic)
+    {
+        // calculating the kinetic integrals needs +1 quantum numbers for overlap integrals
+        ++maxQN1.l;
+        ++maxQN1.m;
+        ++maxQN1.n;
+
+        ++maxQN2.n;
+        ++maxQN2.l;
+        ++maxQN2.m;
+    }
+
+    // calculate the integrals and that's about it
+
+    result.first->second.Reset(gaussian1.alpha, gaussian2.alpha, gaussian1.center, gaussian2.center, maxQN1, maxQN2);
+
+    return result.first->second.getOverlap(gaussian1.angularMomentum, gaussian2.angularMomentum);
+}
+
+
+double Wavefunction::getOverlap(const Systems::AtomWithShells& atom1, const Orbitals::ContractedGaussianOrbital& orbital1, const Systems::AtomWithShells& atom2, const Orbitals::ContractedGaussianOrbital& orbital2, bool extendForKinetic)
+{
+    double res = 0;
+
+    for (auto& gaussian1 : orbital1.gaussianOrbitals)
+        for (auto& gaussian2 : orbital2.gaussianOrbitals)
+            res += gaussian1.normalizationFactor * gaussian2.normalizationFactor * gaussian1.coefficient * gaussian2.coefficient * getOverlap(atom1, gaussian1, atom2, gaussian2, extendForKinetic);
+
+    return res;
 }
