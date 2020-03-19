@@ -171,6 +171,13 @@ bool OptionsFrame::TransferDataFromWindow()
 		return false;
 	}
 
+	if (options.lastStepStatsSteps < 30000)
+	{
+		wxMessageBox("Last statistics steps should be over 30000", "Validation", wxOK | wxICON_INFORMATION, this);
+
+		return false;
+	}
+
 	return true;
 }
 

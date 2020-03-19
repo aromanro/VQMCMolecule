@@ -31,7 +31,7 @@ namespace Orbitals
 			// and that's it
 			// it's just a trial function - ideally it would be the one we're looking for, but if we would know it, we wouldn't have to do the computation :)
 
-			val *= 0.5; //M_SQRT1_2;
+			val *= norm;
 		}
 
 		return val;
@@ -48,7 +48,7 @@ namespace Orbitals
 			else
 				val += m_orb2.getGradient(r);
 
-			val *= 0.5; // M_SQRT1_2;
+			val *= norm;
 		}
 
 		return val;
@@ -65,7 +65,7 @@ namespace Orbitals
 			else
 				val += m_orb2.getLaplacian(r);
 
-			val *= 0.5; // M_SQRT1_2;
+			val *= norm;
 		}
 
 		return val;

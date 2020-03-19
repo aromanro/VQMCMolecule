@@ -11,13 +11,13 @@ namespace Orbitals
 	{
 	public:
 		VQMCOrbital(const ContractedGaussianOrbital& orb)
-			: single(true), minus(false)
+			: single(true), minus(false), norm(1.)
 		{
 			m_orb1 = orb;			
 		}
 
 		VQMCOrbital(const ContractedGaussianOrbital& orb1, const ContractedGaussianOrbital& orb2, bool m)
-			: single(false), minus(m)
+			: single(false), minus(m), norm(0.5)
 		{
 			m_orb1 = orb1;
 			m_orb2 = orb2;
@@ -33,6 +33,8 @@ namespace Orbitals
 		ContractedGaussianOrbital m_orb2;
 		bool single;
 		bool minus;
+
+		double norm;
 	};
 
 }
