@@ -115,7 +115,9 @@ void Wavefunction::Init(const Systems::Molecule& molecule, Random& random, doubl
             const unsigned int index1 = firstAtomOrbsToMerge.size() == start ? i : start + i;
             const unsigned int index2 = secondAtomOrbsToMerge.size() == start ? i : start + i;
 
-            orbitals.push_back(Orbitals::VQMCOrbital(firstAtomOrbsToMerge[index1], secondAtomOrbsToMerge[index2], false));
+            const double Overlap = getOverlap(molecule.atoms[0], firstAtomOrbsToMerge[index1], molecule.atoms[1], secondAtomOrbsToMerge[index2]);
+
+            orbitals.push_back(Orbitals::VQMCOrbital(firstAtomOrbsToMerge[index1], secondAtomOrbsToMerge[index2], Overlap, false));
         }
 
         for (unsigned int i = 0; i < start && orbitals.size() < curParticle; ++i)
@@ -123,7 +125,9 @@ void Wavefunction::Init(const Systems::Molecule& molecule, Random& random, doubl
             const unsigned int index1 = firstAtomOrbsToMerge.size() == start ? i : start + i;
             const unsigned int index2 = secondAtomOrbsToMerge.size() == start ? i : start + i;
 
-            orbitals.push_back(Orbitals::VQMCOrbital(firstAtomOrbsToMerge[index1], secondAtomOrbsToMerge[index2], true));
+            const double Overlap = getOverlap(molecule.atoms[0], firstAtomOrbsToMerge[index1], molecule.atoms[1], secondAtomOrbsToMerge[index2]);
+
+            orbitals.push_back(Orbitals::VQMCOrbital(firstAtomOrbsToMerge[index1], secondAtomOrbsToMerge[index2], Overlap, true));
         }
     }
 
@@ -201,7 +205,9 @@ void Wavefunction::Init(const Systems::Molecule& molecule, Random& random, doubl
             const unsigned int index1 = firstAtomOrbsToMerge.size() == start ? i : start + i;
             const unsigned int index2 = secondAtomOrbsToMerge.size() == start ? i : start + i;
 
-            orbitals.push_back(Orbitals::VQMCOrbital(firstAtomOrbsToMerge[index1], secondAtomOrbsToMerge[index2], false));
+            const double Overlap = getOverlap(molecule.atoms[0], firstAtomOrbsToMerge[index1], molecule.atoms[1], secondAtomOrbsToMerge[index2]);
+
+            orbitals.push_back(Orbitals::VQMCOrbital(firstAtomOrbsToMerge[index1], secondAtomOrbsToMerge[index2], Overlap, false));
         }
 
         for (unsigned int i = 0; i < start && orbitals.size() < static_cast<unsigned long long int>(molecule.alphaElectrons) + curParticle; ++i)
@@ -209,7 +215,9 @@ void Wavefunction::Init(const Systems::Molecule& molecule, Random& random, doubl
             const unsigned int index1 = firstAtomOrbsToMerge.size() == start ? i : start + i;
             const unsigned int index2 = secondAtomOrbsToMerge.size() == start ? i : start + i;
 
-            orbitals.push_back(Orbitals::VQMCOrbital(firstAtomOrbsToMerge[index1], secondAtomOrbsToMerge[index2], true));
+            const double Overlap = getOverlap(molecule.atoms[0], firstAtomOrbsToMerge[index1], molecule.atoms[1], secondAtomOrbsToMerge[index2]);
+
+            orbitals.push_back(Orbitals::VQMCOrbital(firstAtomOrbsToMerge[index1], secondAtomOrbsToMerge[index2], Overlap, true));
         }
     }
 
