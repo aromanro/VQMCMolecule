@@ -10,3 +10,7 @@ It works quite well for atoms, better than Hartree-Fock with the same basis set 
 For molecules, works for diatomic ones (for the other ones, quite badly for now, for reasons I'll detail later, there are hints in the code comments).
 
 The refered formulae in the code are here: https://github.com/CompPhysics/ComputationalPhysics2/tree/gh-pages/doc/Literature in Lectures2015.pdf.
+
+### PROGRAM IN ACTION
+
+[![Program video](https://img.youtube.com/vi/Fxb7nTo_dkM/0.jpg)](https://youtu.be/Fxb7nTo_dkM)
