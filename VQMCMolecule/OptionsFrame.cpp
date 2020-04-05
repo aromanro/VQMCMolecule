@@ -575,11 +575,11 @@ wxPanel* OptionsFrame::CreateStepsSettingsPage(wxBookCtrlBase* parent)
 
 	wxIntegerValidator<int> val2(&options.secondStageGradientDescentSteps, wxNUM_VAL_DEFAULT);
 	val2.SetRange(0, 100);
-	firstStageGradStepsCtrl->SetValidator(val2);
+	secondStageGradStepsCtrl->SetValidator(val2);
 
 	wxIntegerValidator<int> val3(&options.thirdStageGradientDescentSteps, wxNUM_VAL_DEFAULT);
 	val3.SetRange(0, 100);
-	firstStageGradStepsCtrl->SetValidator(val3);
+	thirdStageGradStepsCtrl->SetValidator(val3);
 
 
 	wxIntegerValidator<int> val4(&options.firstThermalSteps, wxNUM_VAL_DEFAULT);
