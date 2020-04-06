@@ -20,14 +20,8 @@ void Wavefunction::Init(const Systems::Molecule& molecule, Random& random, doubl
 
     // this is particularized for a diatomic molecule 
     // for others, as only atomic orbitals would be used, it won't work very well
-    
-    // even for the diatomic case there could be improvements, too, for example selection of the orbitals to be combined
-    // could be done reusing code from the Hartree-Fock project, computing the overlap matrix (with elements only orbitals from the last shell of each atom, those should be enough)
-    // and selecting the orbitals to make up basis functions as 1/sqrt(2) * (O1 + O2) and 1/sqrt(2) * (O1 - O2) could be done based on the overlap value
-    // this method cold be used even for more general molecules
-    
+        
     // but for now I'll let only the diatomic case, it will be the only one exposed from the UI
-
 
 
     orbitals.clear();
