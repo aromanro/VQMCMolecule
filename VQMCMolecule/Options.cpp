@@ -108,7 +108,7 @@ void Options::Save()
 
 		conf->Write("/firstStageGradientDescentSteps", static_cast<long int>(firstStageGradientDescentSteps));
 		conf->Write("/firstThermalSteps", static_cast<long int>(firstThermalSteps));
-		conf->Write("/firstStageThermalStep", static_cast<long int>(firstStageThermalSteps));
+		conf->Write("/firstStageThermalSteps", static_cast<long int>(firstStageThermalSteps));
 		conf->Write("/firstStageStatsSteps", static_cast<long int>(firstStageStatsSteps));
 		conf->Write("/secondStageGradientDescentSteps", static_cast<long int>(secondStageGradientDescentSteps));
 		conf->Write("/secondStageThermalSteps", static_cast<long int>(secondStageThermalSteps));
