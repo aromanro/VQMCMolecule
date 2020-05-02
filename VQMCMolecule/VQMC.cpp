@@ -32,12 +32,14 @@ std::tuple<double, double, double> VQMC::SamplingFokkerPlanck(int thermalSteps, 
     
     //wavefunction.ComputeSlaterInv();
 
+    const int cyclesRefresh = static_cast<int>(100000 / Ne);
+
     for (int cycle = 0; cycle < totalCycles; ++cycle)
     {
         // some hardwired value for now
         // recompute the Slater inverse, in case it accumulates errors
         // for now a hardwired value, maybe it should be configurable?
-        if (cycle % 100000 == 0) wavefunction.ComputeSlaterInv();
+        if (cycle % cyclesRefresh == 0) wavefunction.ComputeSlaterInv();
 
         // one particle move at a time!
         for (unsigned int p = 0; p < Ne; ++p)
