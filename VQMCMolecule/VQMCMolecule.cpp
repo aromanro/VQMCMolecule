@@ -10,11 +10,8 @@
 #include "ChemUtils.h"
 
 
-void VQMCMolecule::Compute(const Options& opt)
-{
-    Chemistry::Basis basisSTOXG;
-    basisSTOXG.Load(opt.basis == 0 ? "sto3g.txt" : "sto6g.txt");
-
+void VQMCMolecule::Compute(const Options& opt, const Chemistry::Basis& basisSTOXG)
+{    
     Systems::AtomWithShells atom1;
     Systems::AtomWithShells atom2;
     for (auto& atom : basisSTOXG.atoms)
@@ -143,7 +140,7 @@ void VQMCMolecule::Compute(const Options& opt)
         if (0 == i)
             thermalSteps = opt.firstStageThermalSteps * NrE;
 
-        std::cout << "Step: " << i << " Energy: " << E + nuclearRepulsionEnergy << " Error: " << sqrt(abs(E2 - E * E) / moves) << " dE/db= " << dEdB << " Beta: " << beta << std::endl;
+        std::cout << "Step: " << i << "\tEnergy: " << E + nuclearRepulsionEnergy << "\tError estimation: " << sqrt(abs(E2 - E * E) / moves) << "\tdE/db= " << dEdB << "\tBeta: " << beta << std::endl;
 
         if (i == opt.firstStageGradientDescentSteps)
         {
