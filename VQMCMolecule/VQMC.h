@@ -18,7 +18,7 @@ public:
 		sdt = sqrt(dt);
 	}
 
-	std::tuple<double, double, double> SamplingFokkerPlanck(int thermalSteps, int cycles, double beta);
+	std::tuple<double, double, double> SamplingFokkerPlanck(int thermalSteps, int cycles, double beta, int cyclesRefreshOpt = 10000);
 
 	void Init(const Systems::Molecule& mol, int seed);
 

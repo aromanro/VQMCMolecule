@@ -82,6 +82,7 @@ void VQMCMolecule::Compute(const Options& opt, const Chemistry::Basis& basisSTOX
     int secondStageLimit = opt.firstStageGradientDescentSteps + opt.secondStageGradientDescentSteps;
 
     const double nuclearRepulsionEnergy = molecule.NuclearRepulsionEnergy();
+    const int cyclesRefresh = opt.cyclesRefresh;
 
     for (int i = 0; i < nrGradientDescentSteps; ++i)
     {
@@ -96,7 +97,7 @@ void VQMCMolecule::Compute(const Options& opt, const Chemistry::Basis& basisSTOX
 
             if (nextPos > nrWalkers) nextPos = nrWalkers;
 
-            tasks[t] = std::async(launchType, [&vqmcWalkers, startPos, nextPos, thermalSteps, cycleSteps, beta]()->std::tuple<double, double, double>
+            tasks[t] = std::async(launchType, [&vqmcWalkers, startPos, nextPos, thermalSteps, cycleSteps, beta, cyclesRefresh]()->std::tuple<double, double, double>
                 {
                     double E = 0;
                     double E2 = 0;
@@ -107,7 +108,7 @@ void VQMCMolecule::Compute(const Options& opt, const Chemistry::Basis& basisSTOX
                         double Ep;
                         double E2p;
                         double dEdBp;
-                        std::tie(Ep, E2p, dEdBp) = vqmcWalkers[w].SamplingFokkerPlanck(thermalSteps, cycleSteps, beta);
+                        std::tie(Ep, E2p, dEdBp) = vqmcWalkers[w].SamplingFokkerPlanck(thermalSteps, cycleSteps, beta, cyclesRefresh);
                         E += Ep;
                         E2 += E2p;
                         dEdB += dEdBp;

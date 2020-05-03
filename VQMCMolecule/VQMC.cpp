@@ -16,7 +16,7 @@ void VQMC::Init(const Systems::Molecule& mol, int seed)
 }
 
 
-std::tuple<double, double, double> VQMC::SamplingFokkerPlanck(int thermalSteps, int cycles, double beta)
+std::tuple<double, double, double> VQMC::SamplingFokkerPlanck(int thermalSteps, int cycles, double beta, int cyclesRefreshOpt)
 {    
     unsigned int Ne = molecule.alphaElectrons + molecule.betaElectrons;
    
@@ -32,7 +32,7 @@ std::tuple<double, double, double> VQMC::SamplingFokkerPlanck(int thermalSteps, 
     
     //wavefunction.ComputeSlaterInv();
 
-    const int cyclesRefresh = static_cast<int>(100000 / Ne);
+    const int cyclesRefresh = (cyclesRefreshOpt > 0 && cyclesRefreshOpt > static_cast<int>(Ne)) ? static_cast<int>(cyclesRefreshOpt / Ne) : 1;
 
     for (int cycle = 0; cycle < totalCycles; ++cycle)
     {

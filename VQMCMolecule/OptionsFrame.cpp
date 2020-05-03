@@ -40,6 +40,8 @@
 #define USE_Z2_ID      221
 #define DISTANCE_ID    222
 
+#define CYCLES_REFRESH_ID 223
+
 
 wxDECLARE_APP(VQMCMoleculeApp);
 
@@ -174,6 +176,13 @@ bool OptionsFrame::TransferDataFromWindow()
 	if (options.lastStepStatsSteps < 30000)
 	{
 		wxMessageBox("Last statistics steps should be over 30000", "Validation", wxOK | wxICON_INFORMATION, this);
+
+		return false;
+	}
+
+	if (options.cyclesRefresh < 1)
+	{
+		wxMessageBox("Recompute Slater inverse steps should not be 0", "Validation", wxOK | wxICON_INFORMATION, this);
 
 		return false;
 	}
@@ -376,6 +385,14 @@ wxPanel* OptionsFrame::CreateComputationSettingsPage(wxBookCtrlBase* parent)
 	wxTextCtrl* betaCtrl = new wxTextCtrl(panel, BETA_ID, str, wxDefaultPosition, wxSize(100, -1), 0);
 	itemSizer->Add(betaCtrl, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL | wxGROW, 5);
 
+
+	label = new wxStaticText(panel, wxID_STATIC, "Recompute Slater inv steps:", wxDefaultPosition, wxSize(200, -1), wxALIGN_RIGHT);
+	itemSizer->Add(label, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+	str = wxString::Format(wxT("%d"), options.cyclesRefresh);
+	wxTextCtrl* cyclesRefresgCtrl = new wxTextCtrl(panel, CYCLES_REFRESH_ID, str, wxDefaultPosition, wxSize(100, -1), 0);
+	itemSizer->Add(cyclesRefresgCtrl, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL | wxGROW, 5);
+
 	item0->Add(itemSizer, 0, wxALL | wxGROW, 0);
 
 	itemSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -415,6 +432,10 @@ wxPanel* OptionsFrame::CreateComputationSettingsPage(wxBookCtrlBase* parent)
 	v3.SetRange(0, 10.);
 	v3.SetPrecision(2);
 	betaCtrl->SetValidator(v3);
+
+	wxIntegerValidator<int> val4(&options.cyclesRefresh, wxNUM_VAL_DEFAULT);
+	val4.SetRange(0, 1000000);
+	cyclesRefresgCtrl->SetValidator(val4);
 
 	m_radioBox->SetValidator(wxGenericValidator(&options.basis));
 

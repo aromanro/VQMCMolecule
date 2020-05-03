@@ -25,6 +25,7 @@ Options::Options()
 	lastStepStatsSteps(64000),
 	gradDescParam(0.3),
 	beta(1.),
+	cyclesRefresh(10000),
 	m_fileconfig(nullptr)
 {
 
@@ -86,6 +87,8 @@ void Options::Load()
 
 		gradDescParam = conf->ReadDouble("/gradDescParam", 0.3);
 		beta = conf->ReadDouble("beta", 1.);
+
+		cyclesRefresh = conf->ReadLong("/cyclesRefresh", 10000);
 	}
 	Close();
 }
@@ -121,6 +124,8 @@ void Options::Save()
 
 		conf->Write("/gradDescParam", gradDescParam);
 		conf->Write("/beta", beta);
+
+		conf->Write("/cyclesRefresh", cyclesRefresh);
 	}
 
 	if (m_fileconfig)

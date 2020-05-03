@@ -53,6 +53,7 @@ public:
 		lastStepStatsSteps(other.lastStepStatsSteps),
 		gradDescParam(other.gradDescParam),
 		beta(other.beta),
+		cyclesRefresh(other.cyclesRefresh),
 		m_fileconfig(nullptr)
 	{
 	}
@@ -90,6 +91,8 @@ public:
 
 		gradDescParam = other.gradDescParam;
 		beta = other.beta;
+
+		cyclesRefresh = other.cyclesRefresh;
 
 		m_fileconfig = nullptr;
 
@@ -132,6 +135,7 @@ public:
 	double gradDescParam;
 	double beta;
 
+	int cyclesRefresh;
 
 protected:
 	void Open();
