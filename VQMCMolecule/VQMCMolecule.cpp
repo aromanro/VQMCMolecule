@@ -141,7 +141,7 @@ void VQMCMolecule::Compute(const Options& opt, const Chemistry::Basis& basisSTOX
         if (0 == i)
             thermalSteps = opt.firstStageThermalSteps * NrE;
 
-        std::cout << "Step: " << i << "\tEnergy: " << E + nuclearRepulsionEnergy << "\tError estimation: " << sqrt(abs(E2 - E * E) / moves) << "\tdE/db= " << dEdB << "\tBeta: " << beta << std::endl;
+        std::cout << "Step: " << i + 1 << "\tEnergy: " << E + nuclearRepulsionEnergy << "\tError estimation: " << sqrt(abs(E2 - E * E) / moves) << "\tdE/db= " << dEdB << "\tBeta: " << beta << std::endl;
 
         if (i == opt.firstStageGradientDescentSteps)
         {
