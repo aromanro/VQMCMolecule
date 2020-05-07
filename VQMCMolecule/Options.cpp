@@ -4,7 +4,7 @@
 
 Options::Options()
 	: 
-	nrThreads(20),
+	nrThreads(8),
 	nrWalkers(100),
 	basis(0),
 	Z1(1), Z2(1),
@@ -62,7 +62,7 @@ void Options::Load()
 	wxConfigBase* conf = wxConfigBase::Get(false);
 	if (conf)
 	{
-		nrThreads = conf->ReadLong("/nrThreads", 20);
+		nrThreads = conf->ReadLong("/nrThreads", 8);
 		nrWalkers = conf->ReadLong("/nrWalkers", 100);
 		basis = conf->ReadLong("/basis", 0);
 		Z1 = conf->ReadLong("/Z1", 1);
