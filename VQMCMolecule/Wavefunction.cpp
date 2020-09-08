@@ -37,6 +37,7 @@ void Wavefunction::Init(const Systems::Molecule& molecule, Random& random, doubl
 
     const bool isSpecialMolecule = molecule.atoms.size() == 2;
 
+    // TODO: some basis sets have more orbitals than needed here (especially the polarization/* ones), need to skip them!
 
     // start with an initial random state
     std::vector<Orbitals::ContractedGaussianOrbital> firstAtomOrbsToMerge;
