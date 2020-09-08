@@ -38,9 +38,9 @@ void Wavefunction::Init(const Systems::Molecule& molecule, Random& random, doubl
     const bool isSpecialMolecule = molecule.atoms.size() == 2;
 
     // TODO: some basis sets have more orbitals than needed here (especially the polarization/* ones), need to skip them!
-    // the 6-31G for example is a 'split valence' one, meaning that 6 gaussians are used for the inner shell, but for the valence shell the basis functions are split in two 
+    // the 6-31G for example is a 'split valence' one, meaning that 6 gaussians are used for the core shells basis functions, but for the valence shell the basis functions are split in two 
     // (that is, there are two basis functions for each valence orbital): one composed of 3 gaussians, one of 1
-    // if I want to use those I'll need to combine them somehow
+    // if I want to use those I'll need to combine them
 
     // start with an initial random state
     std::vector<Orbitals::ContractedGaussianOrbital> firstAtomOrbsToMerge;
