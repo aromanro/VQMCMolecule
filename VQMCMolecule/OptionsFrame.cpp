@@ -64,8 +64,8 @@ OptionsFrame::OptionsFrame(const Options& opt, const wxString & title, wxWindow*
 	basis6_21G.Load("6-21g.1.nw");
 	basis6_31G.Load("6-31g.1.nw");
 
-	basis6_31Gstar.Load("6-31g_st_.1.nw");
-	basis6_31plusGstarstar.Load("6-31+g_st__st_.1.nw");
+	//basis6_31Gstar.Load("6-31g_st_.1.nw");
+	//basis6_31plusGstarstar.Load("6-31+g_st__st_.1.nw");
 
 	SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY);
 

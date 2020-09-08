@@ -62,12 +62,14 @@ void VQMCMolecule::Compute(const Options& opt, const Chemistry::Basis& basisSTOX
     case 4:
         std::cout << "6-31G";
         break;
+    /*
     case 5:
         std::cout << "6-31G*";
         break;
     case 6:
         std::cout << "6-31+G**";
         break;
+    */
     }
         
     std::cout << std::endl;

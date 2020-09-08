@@ -37,8 +37,8 @@ public:
 	Chemistry::Basis basis6_21G;
 	Chemistry::Basis basis6_31G;
 
-	Chemistry::Basis basis6_31Gstar;
-	Chemistry::Basis basis6_31plusGstarstar;
+	//Chemistry::Basis basis6_31Gstar;
+	//Chemistry::Basis basis6_31plusGstarstar;
 
 	Chemistry::Basis* GetBasisPtr()
 	{
@@ -64,6 +64,7 @@ public:
 		{
 			basisPtr = &basis6_31G;
 		}
+		/*
 		else if (5 == options.basis)
 		{
 			basisPtr = &basis6_31Gstar;
@@ -72,6 +73,7 @@ public:
 		{
 			basisPtr = &basis6_31plusGstarstar;
 		}
+		*/
 
 		return basisPtr;
 	}
