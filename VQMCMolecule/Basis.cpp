@@ -39,7 +39,7 @@ namespace Chemistry {
 
 				assert(Z > 0);
 
-				//if (-1 == Z) AfxMessageBox(L"Unknown atom!");
+				//if (Z <= 0) AfxMessageBox(L"Unknown atom!");
 
 				// it's a new atom
 				if (!atoms.size() || atoms.back().Z != Z)

@@ -188,10 +188,39 @@ void VQMCMoleculeFrame::OnExecute(wxCommandEvent& WXUNUSED(event))
 			MyStream myStream(bufferStr, bufferStrMutex);
 			RedirectStream redirect(std::cout, myStream);
 
-			Chemistry::Basis basisSTOXG;
-			basisSTOXG.Load(options.basis == 0 ? "sto3g.txt" : "sto6g.txt");
+			Chemistry::Basis basis;
 
-			VQMCMolecule::Compute(options, basisSTOXG);
+			switch (options.basis)
+			{
+			case 0:
+				basis.Load("sto3g.txt");
+				break;
+
+
+			case 1:
+			default:
+				basis.Load("sto6g.txt");
+				break;
+
+			case 2:
+				basis.Load("3-21g.1.nw");
+				break;
+			case 3:
+				basis.Load("6-21g.1.nw");
+				break;
+			case 4:
+				basis.Load("6-31g.1.nw");
+				break;
+
+			case 5:
+				basis.Load("6-31g_st_.1.nw");
+				break;
+			case 6:
+				basis.Load("6-31+g_st__st_.1.nw");
+				break;
+			}
+
+			VQMCMolecule::Compute(options, basis);
 
 			inExecution = false;
 		}).detach();
