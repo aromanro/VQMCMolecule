@@ -60,13 +60,6 @@ OptionsFrame::OptionsFrame(const Options& opt, const wxString & title, wxWindow*
 	basisSTO3G.Load("sto3g.txt");
 	basisSTO6G.Load("sto6g.txt");
 
-	basis3_21G.Load("3-21g.1.nw");
-	basis6_21G.Load("6-21g.1.nw");
-	basis6_31G.Load("6-31g.1.nw");
-
-	//basis6_31Gstar.Load("6-31g_st_.1.nw");
-	//basis6_31plusGstarstar.Load("6-31+g_st__st_.1.nw");
-
 	SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY);
 
 	options = opt;
@@ -378,16 +371,7 @@ wxPanel* OptionsFrame::CreateComputationSettingsPage(wxBookCtrlBase* parent)
 	choices.Add("STO3G");
 	choices.Add("STO6G");
 	
-	// not exposing them in the UI, because something is wrong with using them and I don't know what yet
-	/*
-	choices.Add("3-21G");
-	choices.Add("6-21G");
-	choices.Add("6-31G");
-	choices.Add("6-31G*");
-	choices.Add("6-31+G**");
-	*/
-
-	wxRadioBox* m_radioBox = new wxRadioBox(panel, BASIS_ID, "Basis", wxDefaultPosition, wxDefaultSize, choices, 2/*7*/, wxRA_VERTICAL);
+	wxRadioBox* m_radioBox = new wxRadioBox(panel, BASIS_ID, "Basis", wxDefaultPosition, wxDefaultSize, choices, 2, wxRA_VERTICAL);
 	itemSizer->Add(m_radioBox, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	item0->Add(itemSizer, 0, wxGROW | wxALL, 0);

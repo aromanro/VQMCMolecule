@@ -200,25 +200,6 @@ void VQMCMoleculeFrame::OnExecute(wxCommandEvent& WXUNUSED(event))
 			default:
 				basis.Load("sto6g.txt");
 				break;
-
-			case 2:
-				basis.Load("3-21g.1.nw");
-				break;
-			case 3:
-				basis.Load("6-21g.1.nw");
-				break;
-			case 4:
-				basis.Load("6-31g.1.nw");
-				break;
-
-			/*
-			case 5:
-				basis.Load("6-31g_st_.1.nw");
-				break;
-			case 6:
-				basis.Load("6-31+g_st__st_.1.nw");
-				break;
-			*/
 			}
 
 			VQMCMolecule::Compute(options, basis);

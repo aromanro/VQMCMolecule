@@ -40,7 +40,9 @@ void Wavefunction::Init(const Systems::Molecule& molecule, Random& random, doubl
     // TODO: some basis sets have more orbitals than needed here (especially the polarization/* ones), need to skip them!
     // the 6-31G for example is a 'split valence' one, meaning that 6 gaussians are used for the core shells basis functions, but for the valence shell the basis functions are split in two 
     // (that is, there are two basis functions for each valence orbital): one composed of 3 gaussians, one of 1
-    // if I want to use those I'll need to combine them
+    // if I want to use those I'll need to combine them somehow
+    // for now only STOnG will be used
+    // even for those it kind of works, but there are issues with picking up the orbitals & combining them
 
     // start with an initial random state
     std::vector<Orbitals::ContractedGaussianOrbital> firstAtomOrbsToMerge;

@@ -33,13 +33,6 @@ public:
 	Chemistry::Basis basisSTO3G;
 	Chemistry::Basis basisSTO6G;
 
-	Chemistry::Basis basis3_21G;
-	Chemistry::Basis basis6_21G;
-	Chemistry::Basis basis6_31G;
-
-	//Chemistry::Basis basis6_31Gstar;
-	//Chemistry::Basis basis6_31plusGstarstar;
-
 	Chemistry::Basis* GetBasisPtr()
 	{
 		Chemistry::Basis* basisPtr = &basisSTO6G; // some default
@@ -48,32 +41,11 @@ public:
 		{
 			basisPtr = &basisSTO3G;
 		}
-		else if (1 == options.basis)
+		else
 		{
 			basisPtr = &basisSTO6G;
 		}
-		else if (2 == options.basis)
-		{
-			basisPtr = &basis3_21G;
-		}
-		else if (3 == options.basis)
-		{
-			basisPtr = &basis6_21G;
-		}
-		else if (4 == options.basis)
-		{
-			basisPtr = &basis6_31G;
-		}
-		/*
-		else if (5 == options.basis)
-		{
-			basisPtr = &basis6_31Gstar;
-		}
-		else if (6 == options.basis)
-		{
-			basisPtr = &basis6_31plusGstarstar;
-		}
-		*/
+
 
 		return basisPtr;
 	}

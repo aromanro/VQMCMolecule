@@ -106,7 +106,7 @@ public:
 	int nrThreads;
 	int nrWalkers;
 
-	int basis; // 0 STO3G, 1 STO6G, 2 - 3-21G, 3 - 6-21G, 4 - 6-31G, 5 - 6-31G*, 6 - 6-31+G** and so on, if I'll add more
+	int basis; // 0 STO3G, 1 STO6G and so on, if I'll add more
 
 	int Z1;
 	int Z2;
