@@ -193,7 +193,7 @@ namespace Orbitals {
 	}
 
 
-	void Orbitals::ContractedGaussianShell::AddOrbital(char type)
+	void Orbitals::ContractedGaussianShell::AddOrbitals(char type)
 	{
 		unsigned int L = 0;
 
