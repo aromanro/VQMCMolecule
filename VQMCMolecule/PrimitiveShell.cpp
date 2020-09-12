@@ -260,12 +260,13 @@ namespace Orbitals {
 
 		orbital.angularMomentum.l = L;
 
-		while (orbital.angularMomentum == L)
+		do
 		{
 			basisFunctions.push_back(orbital);
 
 			++orbital.angularMomentum; // note: the increment doesn't do what you might expect!
 		}
+		while (orbital.angularMomentum == L);
 	}
 
 
