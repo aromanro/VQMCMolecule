@@ -191,7 +191,7 @@ std::vector<wxString> OptionsFrame::GetAtoms()
 	int s = 0;
 	for (const auto& atom : basisPtr->atoms)
 	{
-		strings.push_back(Chemistry::ChemUtils::GetAtomNameForZ(atom.Z));
+		strings.emplace_back(Chemistry::ChemUtils::GetAtomNameForZ(atom.Z));
 
 		if (atom.Z == options.Z1)
 			sel1 = s;
