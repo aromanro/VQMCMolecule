@@ -214,6 +214,7 @@ void Wavefunction::Init(const Systems::Molecule& molecule, Random& random, doubl
 
 
     assert(curParticle == molecule.betaElectrons);
+    curParticle = molecule.betaElectrons; // just for safety
 
 
     if (isSpecialMolecule)
