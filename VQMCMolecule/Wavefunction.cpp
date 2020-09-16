@@ -186,6 +186,7 @@ void Wavefunction::Init(const Systems::Molecule& molecule, Random& random, doubl
     if (isSpecialMolecule)
     {
         unsigned int start = static_cast<unsigned int>(std::min(firstAtomOrbsToMerge.size(), secondAtomOrbsToMerge.size()));
+        unsigned int end = static_cast<unsigned int>(std::max(firstAtomOrbsToMerge.size(), secondAtomOrbsToMerge.size()));
 
         if (firstAtomOrbsToMerge.size() > start)
         {
@@ -218,6 +219,16 @@ void Wavefunction::Init(const Systems::Molecule& molecule, Random& random, doubl
             const double Overlap = getOverlap(molecule.atoms[0], firstAtomOrbsToMerge[index1], molecule.atoms[1], secondAtomOrbsToMerge[index2]);
 
             orbitals.push_back(Orbitals::VQMCOrbital(firstAtomOrbsToMerge[index1], secondAtomOrbsToMerge[index2], Overlap, true));
+        }
+
+        for (unsigned int i = start; i < end && orbitals.size() < static_cast<unsigned long long int>(molecule.alphaElectrons) + molecule.betaElectrons; ++i)
+        {
+            const unsigned int index1 = firstAtomOrbsToMerge.size() == start ? start - 1 : start + i;
+            const unsigned int index2 = secondAtomOrbsToMerge.size() == start ? start - 1 : start + i;
+
+            const double Overlap = getOverlap(molecule.atoms[0], firstAtomOrbsToMerge[index1], molecule.atoms[1], secondAtomOrbsToMerge[index2]);
+
+            orbitals.push_back(Orbitals::VQMCOrbital(firstAtomOrbsToMerge[index1], secondAtomOrbsToMerge[index2], Overlap, false));
         }
     }
 
