@@ -221,6 +221,7 @@ void Wavefunction::Init(const Systems::Molecule& molecule, Random& random, doubl
         unsigned int start = static_cast<unsigned int>(std::min(firstAtomOrbsToMerge.size(), secondAtomOrbsToMerge.size()));
         unsigned int end = static_cast<unsigned int>(std::max(firstAtomOrbsToMerge.size(), secondAtomOrbsToMerge.size()));
 
+        /*
         if (firstAtomOrbsToMerge.size() > start)
         {
             for (unsigned int i = 0; i < start; ++i)
@@ -232,6 +233,7 @@ void Wavefunction::Init(const Systems::Molecule& molecule, Random& random, doubl
             for (unsigned int i = 0; i < start; ++i)
                 orbitals.push_back(secondAtomOrbsToMerge[i]);
         }
+        */
 
         // merge orbitals
         for (unsigned int i = 0; i < start && orbitals.size() < static_cast<unsigned long long int>(molecule.alphaElectrons) + curParticle; ++i)
