@@ -302,14 +302,20 @@ void Wavefunction::ComputeSlaterInv()
             SpinUpInvSlater(i, j) = orbitals[j](currentParticles[i]);
 
     if (m_molecule->alphaElectrons)
-        SpinUpInvSlater = SpinUpInvSlater.inverse();
+    {
+        Eigen::FullPivLU<Eigen::MatrixXd> lu(SpinUpInvSlater);
+        SpinUpInvSlater = lu.inverse();
+    }
 
     for (unsigned int i = 0; i < m_molecule->betaElectrons; ++i)
         for (unsigned int j = 0; j < m_molecule->betaElectrons; ++j)
             SpinDownInvSlater(i, j) = orbitals[static_cast<size_t>(m_molecule->alphaElectrons) + j](currentParticles[static_cast<size_t>(m_molecule->alphaElectrons) + i]);
 
     if (m_molecule->betaElectrons)
-        SpinDownInvSlater = SpinDownInvSlater.inverse();
+    {
+        Eigen::FullPivLU<Eigen::MatrixXd> lu(SpinDownInvSlater);
+        SpinDownInvSlater = lu.inverse();
+    }
 }
 
 
@@ -480,8 +486,8 @@ double Wavefunction::LocalKineticEnergy(double beta) const
 
             for (unsigned int i = 0; i < m_molecule->betaElectrons; ++i)
             {
-                logGradientSlaterPart += orbitals[static_cast<size_t>(m_molecule->alphaElectrons) + i].getGradient(partPos)* SpinDownInvSlater(i, lp);
-                laplacianSlaterRatio += orbitals[static_cast<size_t>(m_molecule->alphaElectrons) + i].getLaplacian(partPos)* SpinDownInvSlater(i, lp);
+                logGradientSlaterPart += orbitals[static_cast<size_t>(m_molecule->alphaElectrons) + i].getGradient(partPos) * SpinDownInvSlater(i, lp);
+                laplacianSlaterRatio += orbitals[static_cast<size_t>(m_molecule->alphaElectrons) + i].getLaplacian(partPos) * SpinDownInvSlater(i, lp);
             }
         }
 
@@ -558,7 +564,6 @@ void Wavefunction::UpdateInverses(const Vector3D<double>& newPos, unsigned int p
                     newInvSlater(j, i) = SpinDownInvSlater(j, i) - SpinDownInvSlater(j, p) / ratio * sum;
             }
         }
-
         
         SpinDownInvSlater.swap(newInvSlater);
     }

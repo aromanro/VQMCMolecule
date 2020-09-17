@@ -152,9 +152,9 @@ bool OptionsFrame::TransferDataFromWindow()
 		return false;
 	}
 
-	if (options.firstThermalSteps < 100000)
+	if (options.firstThermalSteps < 30000)
 	{
-		wxMessageBox("First thermal steps should be over 100000", "Validation", wxOK | wxICON_INFORMATION, this);
+		wxMessageBox("First thermal steps should be over 30000", "Validation", wxOK | wxICON_INFORMATION, this);
 
 		return false;
 	}

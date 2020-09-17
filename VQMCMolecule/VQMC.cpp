@@ -26,20 +26,17 @@ std::tuple<double, double, double> VQMC::SamplingFokkerPlanck(int thermalSteps, 
     double logDerivBeta = 0;
     double logDerivBetaE = 0;
 
-    int accepted = 0;
+    //long long int accepted = 0;
 
-    const int totalCycles = thermalSteps + cycles;
+    const long long int totalCycles = static_cast<long long int>(thermalSteps) + cycles;
     
-    //wavefunction.ComputeSlaterInv();
-
     const int cyclesRefresh = (cyclesRefreshOpt > 0 && cyclesRefreshOpt > static_cast<int>(Ne)) ? static_cast<int>(cyclesRefreshOpt / Ne) : 1;
 
-    for (int cycle = 0; cycle < totalCycles; ++cycle)
+    for (long long int cycle = 0; cycle < totalCycles; ++cycle)
     {
-        // some hardwired value for now
         // recompute the Slater inverse, in case it accumulates errors
-        // for now a hardwired value, maybe it should be configurable?
-        if (cycle % cyclesRefresh == 0) wavefunction.ComputeSlaterInv();
+        if (cycle % cyclesRefresh == 0) 
+            wavefunction.ComputeSlaterInv();
 
         // one particle move at a time!
         for (unsigned int p = 0; p < Ne; ++p)
@@ -68,7 +65,7 @@ std::tuple<double, double, double> VQMC::SamplingFokkerPlanck(int thermalSteps, 
                 wavefunction.currentParticles[p] = newPos;
                 wavefunction.UpdateInverses(newPos, p, SlaterRatio);
 
-                ++accepted; // for statistical purposes
+                //++accepted; // for statistical purposes
             }
             // else reject move
 
