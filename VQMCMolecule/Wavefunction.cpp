@@ -106,16 +106,16 @@ void Wavefunction::Init(const Systems::Molecule& molecule, Random& random, doubl
 
 
 	// now, combine the valence orbitals in 'molecular' ones for 'alpha' electrons
-
+	bool firstPass = true;
 	for (unsigned int i = 0; orbitals.size() < molecule.alphaElectrons; ++i)
 	{
 		const double Overlap = std::get<1>(overlapsVector[i]);
 		const unsigned int index1 = std::get<0>(std::get<0>(overlapsVector[i]));
 		const unsigned int index2 = std::get<1>(std::get<0>(overlapsVector[i]));
 
-		orbitals.push_back(Orbitals::VQMCOrbital(firstAtomOrbsToMerge[index1], secondAtomOrbsToMerge[index2], Overlap, false));
+		orbitals.push_back(Orbitals::VQMCOrbital(firstAtomOrbsToMerge[index1], secondAtomOrbsToMerge[index2], Overlap, Overlap > 0 ? false : true));
 		if (orbitals.size() == molecule.alphaElectrons) break;
-		orbitals.push_back(Orbitals::VQMCOrbital(firstAtomOrbsToMerge[index1], secondAtomOrbsToMerge[index2], Overlap, true));
+		orbitals.push_back(Orbitals::VQMCOrbital(firstAtomOrbsToMerge[index1], secondAtomOrbsToMerge[index2], Overlap, Overlap > 0 ? true : false));
 	}
 
 
@@ -154,9 +154,9 @@ void Wavefunction::Init(const Systems::Molecule& molecule, Random& random, doubl
 		const unsigned int index1 = std::get<0>(std::get<0>(overlapsVector[i]));
 		const unsigned int index2 = std::get<1>(std::get<0>(overlapsVector[i]));
 
-		orbitals.push_back(Orbitals::VQMCOrbital(firstAtomOrbsToMerge[index1], secondAtomOrbsToMerge[index2], Overlap, false));
+		orbitals.push_back(Orbitals::VQMCOrbital(firstAtomOrbsToMerge[index1], secondAtomOrbsToMerge[index2], Overlap, Overlap > 0 ? false : true));
 		if (orbitals.size() == totalElectrons) break;
-		orbitals.push_back(Orbitals::VQMCOrbital(firstAtomOrbsToMerge[index1], secondAtomOrbsToMerge[index2], Overlap, true));
+		orbitals.push_back(Orbitals::VQMCOrbital(firstAtomOrbsToMerge[index1], secondAtomOrbsToMerge[index2], Overlap, Overlap > 0 ? true : false));
 	}
 
 	overlapIntegralsMap.clear();
