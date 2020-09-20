@@ -117,7 +117,6 @@ void Wavefunction::Init(const Systems::Molecule& molecule, Random& random, doubl
 		if (firstPass)
 			orbitals.push_back(Orbitals::VQMCOrbital(firstAtomOrbsToMerge[index1], secondAtomOrbsToMerge[index2], Overlap, Overlap > 0 ? false : true));
 		else
-		//if (orbitals.size() == molecule.alphaElectrons) break;
 			orbitals.push_back(Orbitals::VQMCOrbital(firstAtomOrbsToMerge[index1], secondAtomOrbsToMerge[index2], Overlap, Overlap > 0 ? true : false));
 
 		if (firstPass && i == molecule.alphaElectrons - 1)
@@ -167,7 +166,6 @@ void Wavefunction::Init(const Systems::Molecule& molecule, Random& random, doubl
 		if (firstPass)
 			orbitals.push_back(Orbitals::VQMCOrbital(firstAtomOrbsToMerge[index1], secondAtomOrbsToMerge[index2], Overlap, Overlap > 0 ? false : true));
 		else
-		//if (orbitals.size() == totalElectrons) break;
 			orbitals.push_back(Orbitals::VQMCOrbital(firstAtomOrbsToMerge[index1], secondAtomOrbsToMerge[index2], Overlap, Overlap > 0 ? true : false));
 
 		if (firstPass && i == totalElectrons - 1)
