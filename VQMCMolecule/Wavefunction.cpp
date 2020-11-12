@@ -56,25 +56,29 @@ void Wavefunction::Init(const Systems::Molecule& molecule, Random& random, doubl
 	for (unsigned int curOrb = 0; curOrb < molecule.atoms[0].shells[lastShell].basisFunctions.size(); ++curOrb)
 		firstAtomOrbsToMerge.push_back(molecule.atoms[0].shells[lastShell].basisFunctions[curOrb]);
 
-	lastShell = molecule.atoms[1].shells.size() - 1;
 
-	for (unsigned int curOrb = 0; curOrb < molecule.atoms[1].shells[lastShell].basisFunctions.size(); ++curOrb)
-		secondAtomOrbsToMerge.push_back(molecule.atoms[1].shells[lastShell].basisFunctions[curOrb]);
-
-	// compute the overlaps
 	std::vector<std::tuple<std::tuple<unsigned int, unsigned int>, double>> overlapsVector;
 
-	for (unsigned int firstOrb = 0; firstOrb < firstAtomOrbsToMerge.size(); ++firstOrb)
-		for (unsigned int secondOrb = 0; secondOrb < secondAtomOrbsToMerge.size(); ++secondOrb)
-		{
-			const double Overlap = getOverlap(molecule.atoms[0], firstAtomOrbsToMerge[firstOrb], molecule.atoms[1], secondAtomOrbsToMerge[secondOrb]);
+	if (molecule.atoms.size() > 1)
+	{
+		lastShell = molecule.atoms[1].shells.size() - 1;
 
-			overlapsVector.emplace_back(std::make_tuple(std::make_tuple(firstOrb, secondOrb), Overlap));
-		}
+		for (unsigned int curOrb = 0; curOrb < molecule.atoms[1].shells[lastShell].basisFunctions.size(); ++curOrb)
+			secondAtomOrbsToMerge.push_back(molecule.atoms[1].shells[lastShell].basisFunctions[curOrb]);
+
+		// compute the overlaps
+		for (unsigned int firstOrb = 0; firstOrb < firstAtomOrbsToMerge.size(); ++firstOrb)
+			for (unsigned int secondOrb = 0; secondOrb < secondAtomOrbsToMerge.size(); ++secondOrb)
+			{
+				const double Overlap = getOverlap(molecule.atoms[0], firstAtomOrbsToMerge[firstOrb], molecule.atoms[1], secondAtomOrbsToMerge[secondOrb]);
+
+				overlapsVector.emplace_back(std::make_tuple(std::make_tuple(firstOrb, secondOrb), Overlap));
+			}
 
 
-	// now sort them by the abs of overlap
-	std::sort(overlapsVector.begin(), overlapsVector.end(), [](const auto& val1, const auto& val2) -> bool { return abs(std::get<1>(val1)) > abs(std::get<1>(val2)); });
+		// now sort them by the abs of overlap
+		std::sort(overlapsVector.begin(), overlapsVector.end(), [](const auto& val1, const auto& val2) -> bool { return abs(std::get<1>(val1)) > abs(std::get<1>(val2)); });
+	}
 
 
 	// distribute the electrons randomly and add the orbitals for the 'core' electrons
@@ -94,7 +98,7 @@ void Wavefunction::Init(const Systems::Molecule& molecule, Random& random, doubl
 				if (curParticle >= accumAtomParticles)
 					break;
 
-				if (!isOnLastShell)
+				if (!isOnLastShell || molecule.atoms.size() == 1)
 					orbitals.push_back(molecule.atoms[curAtom].shells[curShell].basisFunctions[curOrb]);
 
 				currentParticles[curParticle] = molecule.atoms[curAtom].position + random.getRandomVector() * radiusInit;
@@ -144,7 +148,7 @@ void Wavefunction::Init(const Systems::Molecule& molecule, Random& random, doubl
 				if (curParticle >= accumAtomParticles)
 					break;
 
-				if (!isOnLastShell)
+				if (!isOnLastShell || molecule.atoms.size() == 1)
 					orbitals.push_back(molecule.atoms[curAtom].shells[curShell].basisFunctions[curOrb]);
 
 				currentParticles[static_cast<unsigned long long int>(molecule.alphaElectrons) + curParticle] = molecule.atoms[curAtom].position + random.getRandomVector() * radiusInit;
