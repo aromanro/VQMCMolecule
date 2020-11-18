@@ -1,0 +1,15 @@
+
+.vs/VQMCMolecule/v16/.suo
+*.db
+*.ipch
+*.obj
+*.idb
+*.pdb
+*.log
+*.recipe
+*.tlog
+*.txt
+*.exe
+*.ilk
+*.iobj
+*.ipdb
