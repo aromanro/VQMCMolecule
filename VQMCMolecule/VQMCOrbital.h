@@ -17,15 +17,10 @@ namespace Orbitals
 		}
 
 		VQMCOrbital(const ContractedGaussianOrbital& orb1, const ContractedGaussianOrbital& orb2, double Overlap, bool m)
-			: single(false), minus(m), norm(0.5)
+			: single(false), minus(m), norm(sqrt(2. * (m ? 1. - Overlap : 1. + Overlap)))
 		{
 			m_orb1 = orb1;
 			m_orb2 = orb2;
-
-			if (minus)
-				norm = sqrt(2. * (1. - Overlap));
-			else
-				norm = sqrt(2. * (1. + Overlap));
 		}
 
 		virtual double operator()(const Vector3D<double>& r) const override;
