@@ -46,7 +46,7 @@ void Wavefunction::Init(const Systems::Molecule& molecule, Random& random, doubl
 
 	// start with an initial random state
 	
-	// first, some picking up or valence orbitals to be combined in 'molecular' orbitals:
+	// first, some picking up of valence orbitals to be combined in 'molecular' orbitals:
 	
 	std::vector<Orbitals::ContractedGaussianOrbital> firstAtomOrbsToMerge;
 	std::vector<Orbitals::ContractedGaussianOrbital> secondAtomOrbsToMerge;
