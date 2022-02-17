@@ -60,7 +60,7 @@ protected:
 
 	std::vector<wxString> GetAtoms();
 
-	virtual bool TransferDataFromWindow() override;
+	bool TransferDataFromWindow() override;
 
 	void OnClose(wxCloseEvent& event);
 	void OnUseZ2(wxCommandEvent& event);

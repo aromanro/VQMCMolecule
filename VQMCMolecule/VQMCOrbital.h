@@ -23,10 +23,10 @@ namespace Orbitals
 			m_orb2 = orb2;
 		}
 
-		virtual double operator()(const Vector3D<double>& r) const override;
+		double operator()(const Vector3D<double>& r) const override;
 
-		virtual Vector3D<double> getGradient(const Vector3D<double>& r) const override;
-		virtual double getLaplacian(const Vector3D<double>& r) const override;
+		Vector3D<double> getGradient(const Vector3D<double>& r) const override;
+		double getLaplacian(const Vector3D<double>& r) const override;
 
 	protected:
 		ContractedGaussianOrbital m_orb1;

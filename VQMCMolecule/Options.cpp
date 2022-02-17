@@ -28,7 +28,6 @@ Options::Options()
 	cyclesRefresh(10000),
 	m_fileconfig(nullptr)
 {
-
 }
 
 

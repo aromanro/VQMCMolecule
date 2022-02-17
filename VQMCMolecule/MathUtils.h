@@ -81,13 +81,9 @@ private:
 	}
 
 public:
-
 	class FunctionFunctor {
 	public:
 		virtual double operator()(double x) const = 0;
 	};
-
-
-
 };
 

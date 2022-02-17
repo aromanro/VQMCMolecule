@@ -301,6 +301,5 @@ namespace Chemistry {
 void Chemistry::Basis::Normalize()
 {
 	// here just in case, it should be normalized when loading!
-
 	for (auto& atom : atoms) atom.Normalize();
 }

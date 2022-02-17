@@ -40,9 +40,9 @@ namespace Orbitals {
 		PrimitiveGaussianShell();
 		~PrimitiveGaussianShell();
 
-		virtual double operator()(const Vector3D<double>& r) const override;
-		virtual Vector3D<double> getGradient(const Vector3D<double>& r) const override;
-		virtual double getLaplacian(const Vector3D<double>& r) const override;
+		double operator()(const Vector3D<double>& r) const override;
+		Vector3D<double> getGradient(const Vector3D<double>& r) const override;
+		double getLaplacian(const Vector3D<double>& r) const override;
 
 		void Normalize();
 	};
@@ -72,9 +72,9 @@ namespace Orbitals {
 		unsigned int CountNumberOfContractedGaussians() const;
 		unsigned int CountNumberOfGaussians() const;
 
-		virtual double operator()(const Vector3D<double>& r) const override;
-		virtual Vector3D<double> getGradient(const Vector3D<double>& r) const override;
-		virtual double getLaplacian(const Vector3D<double>& r) const override;
+		double operator()(const Vector3D<double>& r) const override;
+		Vector3D<double> getGradient(const Vector3D<double>& r) const override;
+		double getLaplacian(const Vector3D<double>& r) const override;
 
 	protected:
 		static unsigned int AdjustOrbitalsCount(char orbital, unsigned int res);

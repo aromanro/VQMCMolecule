@@ -18,7 +18,6 @@ public:
 
 	inline double getZeroOne()
 	{
-		
 		return uniformZeroOne(rng);
 	}
 
