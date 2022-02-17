@@ -290,7 +290,6 @@ namespace Chemistry {
 					file << std::endl;
 				}
 			}
-
 		}
 
 		file << "END" << std::endl;

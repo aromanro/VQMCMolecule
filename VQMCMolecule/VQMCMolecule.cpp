@@ -98,7 +98,6 @@ void VQMCMolecule::Compute(const Options& opt, const Chemistry::Basis& basisSTOX
 
     for (int i = 0; i < nrGradientDescentSteps; ++i)
     {
-
         int nextPos;
 
         int startPos = 0;

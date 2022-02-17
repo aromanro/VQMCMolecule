@@ -1,6 +1,8 @@
 # VQMCMolecule
 Variational Quantum Monte Carlo for a molecule, using Fokker-Planck/Langevin approach
 
+[![CodeFactor](https://www.codefactor.io/repository/github/aromanro/vqmcmolecule/badge)](https://www.codefactor.io/repository/github/aromanro/vqmcmolecule)
+
 It requires quite a lot of computation power, by default now it will start for 20 threads setting, so be sure if you try it out to have enough computing power.
 
 It works quite well for atoms, better than Hartree-Fock with the same basis set.
