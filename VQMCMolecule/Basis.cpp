@@ -170,31 +170,8 @@ namespace Chemistry {
 
 		std::stringstream orbitalsStr;
 
-		bool addComma = false;
-		if (sNr > 0) {
-			orbitalsStr << sNr << 's';
-			addComma = true;
-		}
-		if (pNr > 0) {
-			if (addComma) orbitalsStr << ',';
-			orbitalsStr << pNr << 'p';
-		}
-		if (dNr > 0) {
-			if (addComma) orbitalsStr << ',';
-			orbitalsStr << dNr << 'd';
-		}
-		if (fNr > 0) {
-			if (addComma) orbitalsStr << ',';
-			orbitalsStr << fNr << 'f';
-		}
-		if (gNr > 0) {
-			if (addComma) orbitalsStr << ',';
-			orbitalsStr << gNr << 'g';
-		}
-		if (hNr > 0) {
-			if (addComma) orbitalsStr << ',';
-			orbitalsStr << hNr << 'h';
-		}
+		GenerateOrbitalsString(orbitalsStr, sNr, pNr, dNr, fNr, gNr, hNr);
+
 		file << orbitalsStr.str() << ") -> [";
 
 		sNr = 0;
@@ -208,31 +185,7 @@ namespace Chemistry {
 
 		orbitalsStr.seekp(0);
 
-		addComma = false;
-		if (sNr > 0) {
-			orbitalsStr << sNr << 's';
-			addComma = true;
-		}
-		if (pNr > 0) {
-			if (addComma) orbitalsStr << ',';
-			orbitalsStr << pNr << 'p';
-		}
-		if (dNr > 0) {
-			if (addComma) orbitalsStr << ',';
-			orbitalsStr << dNr << 'd';
-		}
-		if (fNr > 0) {
-			if (addComma) orbitalsStr << ',';
-			orbitalsStr << fNr << 'f';
-		}
-		if (gNr > 0) {
-			if (addComma) orbitalsStr << ',';
-			orbitalsStr << gNr << 'g';
-		}
-		if (hNr > 0) {
-			if (addComma) orbitalsStr << ',';
-			orbitalsStr << hNr << 'h';
-		}
+		GenerateOrbitalsString(orbitalsStr, sNr, pNr, dNr, fNr, gNr, hNr);
 
 		file << orbitalsStr.str() << "]" << std::endl;
 
@@ -269,6 +222,36 @@ namespace Chemistry {
 			hNr += shell.CountContractedOrbitals('h');
 		}
 	}
+
+	void Basis::GenerateOrbitalsString(std::stringstream& orbitalsStr, int sNr, int pNr, int dNr, int fNr, int gNr, int hNr)
+	{
+		bool addComma = false;
+		if (sNr > 0) {
+			orbitalsStr << sNr << 's';
+			addComma = true;
+		}
+		if (pNr > 0) {
+			if (addComma) orbitalsStr << ',';
+			orbitalsStr << pNr << 'p';
+		}
+		if (dNr > 0) {
+			if (addComma) orbitalsStr << ',';
+			orbitalsStr << dNr << 'd';
+		}
+		if (fNr > 0) {
+			if (addComma) orbitalsStr << ',';
+			orbitalsStr << fNr << 'f';
+		}
+		if (gNr > 0) {
+			if (addComma) orbitalsStr << ',';
+			orbitalsStr << gNr << 'g';
+		}
+		if (hNr > 0) {
+			if (addComma) orbitalsStr << ',';
+			orbitalsStr << hNr << 'h';
+		}
+	}
+
 
 
 	void Basis::SaveShell(std::ofstream& file, const Orbitals::ContractedGaussianShell& shell)

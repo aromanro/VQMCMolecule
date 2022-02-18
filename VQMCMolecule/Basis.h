@@ -21,6 +21,7 @@ namespace Chemistry {
 		void SaveShell(std::ofstream& file, const Orbitals::ContractedGaussianShell& shell);
 		void CountOrbitals(const Systems::AtomWithShells& atom, int& sNr, int& pNr, int& dNr, int& fNr, int& gNr, int& hNr);
 		void CountContractedOrbitals(const Systems::AtomWithShells& atom, int& sNr, int& pNr, int& dNr, int& fNr, int& gNr, int& hNr);
+		void GenerateOrbitalsString(std::stringstream& orbitalsStr, int sNr, int pNr, int dNr, int fNr, int gNr, int hNr);
 	};
 
 }
