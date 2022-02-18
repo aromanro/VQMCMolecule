@@ -102,7 +102,11 @@ bool OptionsFrame::TransferDataFromWindow()
 		++s;
 	}
 
+	return CheckOptions();
+}
 
+bool OptionsFrame::CheckOptions()
+{
 	if (options.useZ2 && options.distance < 0.01)
 	{
 		wxMessageBox("Please enter a bigger distance between atoms", "Validation", wxOK | wxICON_INFORMATION, this);
@@ -175,6 +179,7 @@ bool OptionsFrame::TransferDataFromWindow()
 
 	return true;
 }
+
 
 void OptionsFrame::OnClose(wxCloseEvent& event)
 {

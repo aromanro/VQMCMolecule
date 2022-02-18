@@ -61,6 +61,7 @@ protected:
 	std::vector<wxString> GetAtoms();
 
 	bool TransferDataFromWindow() override;
+	bool CheckOptions();
 
 	void OnClose(wxCloseEvent& event);
 	void OnUseZ2(wxCommandEvent& event);
