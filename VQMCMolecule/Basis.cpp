@@ -146,153 +146,163 @@ namespace Chemistry {
 		file.precision(10);
 
 		file << "BASIS \"ao basis\" PRINT" << std::endl;
+
 		for (const auto &atom : atoms)
 		{
-			file << "#BASIS SET: (";
-
-			int sNr = 0;
-			int pNr = 0;
-			int dNr = 0;
-			int fNr = 0;
-			int gNr = 0;
-			int hNr = 0;
-
-			std::stringstream orbitalsStr;
-
-			for (const auto &shell : atom.shells)
-			{
-				sNr += shell.CountOrbitals('s');
-				pNr += shell.CountOrbitals('p');
-				dNr += shell.CountOrbitals('d');
-				fNr += shell.CountOrbitals('f');
-				gNr += shell.CountOrbitals('g');
-				hNr += shell.CountOrbitals('h');
-			}
-
-			bool addComma = false;
-			if (sNr > 0) {
-				orbitalsStr << sNr << 's';
-				addComma = true;
-			}
-			if (pNr > 0) {
-				if (addComma) orbitalsStr << ',';
-				orbitalsStr << pNr << 'p';
-			}
-			if (dNr > 0) {
-				if (addComma) orbitalsStr << ',';
-				orbitalsStr << dNr << 'd';
-			}
-			if (fNr > 0) {
-				if (addComma) orbitalsStr << ',';
-				orbitalsStr << fNr << 'f';
-			}
-			if (gNr > 0) {
-				if (addComma) orbitalsStr << ',';
-				orbitalsStr << gNr << 'g';
-			}
-			if (hNr > 0) {
-				if (addComma) orbitalsStr << ',';
-				orbitalsStr << hNr << 'h';
-			}
-			file << orbitalsStr.str() << ") -> [";
-
-			sNr = 0;
-			pNr = 0;
-			dNr = 0;
-			fNr = 0;
-			gNr = 0;
-			hNr = 0;
-			orbitalsStr.seekp(0);
-
-			for (const auto &shell : atom.shells)
-			{
-				sNr += shell.CountContractedOrbitals('s');
-				pNr += shell.CountContractedOrbitals('p');
-				dNr += shell.CountContractedOrbitals('d');
-				fNr += shell.CountContractedOrbitals('f');
-				gNr += shell.CountContractedOrbitals('g');
-				hNr += shell.CountContractedOrbitals('h');
-			}
-
-			addComma = false;
-			if (sNr > 0) {
-				orbitalsStr << sNr << 's';
-				addComma = true;
-			}
-			if (pNr > 0) {
-				if (addComma) orbitalsStr << ',';
-				orbitalsStr << pNr << 'p';
-			}
-			if (dNr > 0) {
-				if (addComma) orbitalsStr << ',';
-				orbitalsStr << dNr << 'd';
-			}
-			if (fNr > 0) {
-				if (addComma) orbitalsStr << ',';
-				orbitalsStr << fNr << 'f';
-			}
-			if (gNr > 0) {
-				if (addComma) orbitalsStr << ',';
-				orbitalsStr << gNr << 'g';
-			}
-			if (hNr > 0) {
-				if (addComma) orbitalsStr << ',';
-				orbitalsStr << hNr << 'h';
-			}
-
-			file << orbitalsStr.str() << "]" << std::endl;
-
-			for (const auto &shell : atom.shells)
-			{
-				file << ChemUtils::GetAtomNameForZ(atom.Z) << "    " << shell.GetShellString() << std::endl;
-
-
-				for (int i = 0; i < static_cast<int>(shell.basisFunctions.front().gaussianOrbitals.size()); ++i)
-				{
-					bool first = true;
-					for (int j = 0; j < static_cast<int>(shell.basisFunctions.size());)
-					{
-						auto &orbital = shell.basisFunctions[j];
-
-						file << "      ";
-						if (first)
-						{
-							first = false;
-							file << orbital.gaussianOrbitals[i].alpha << "      ";
-						}
-
-						file << orbital.gaussianOrbitals[i].coefficient;
-
-						switch (orbital.gaussianOrbitals[i].AtomicOrbital())
-						{
-						default:
-						case 's':
-							++j;
-							break;
-						case 'p':
-							j += Orbitals::QuantumNumbers::QuantumNumbers::NumOrbitals(1);
-							break;
-						case 'd':
-							j += Orbitals::QuantumNumbers::QuantumNumbers::NumOrbitals(2);
-							break;
-						case 'f':
-							j += Orbitals::QuantumNumbers::QuantumNumbers::NumOrbitals(3);
-							break;
-						case 'g':
-							j += Orbitals::QuantumNumbers::QuantumNumbers::NumOrbitals(4);
-							break;
-						case 'h':
-							j += Orbitals::QuantumNumbers::QuantumNumbers::NumOrbitals(5);
-							break;
-						}
-					}
-
-					file << std::endl;
-				}
-			}
+			SaveAtom(file, atom);
 		}
 
 		file << "END" << std::endl;
+	}
+
+	void Basis::SaveAtom(std::ofstream& file, const Systems::AtomWithShells& atom)
+	{
+		file << "#BASIS SET: (";
+
+		int sNr = 0;
+		int pNr = 0;
+		int dNr = 0;
+		int fNr = 0;
+		int gNr = 0;
+		int hNr = 0;
+
+		std::stringstream orbitalsStr;
+
+		for (const auto& shell : atom.shells)
+		{
+			sNr += shell.CountOrbitals('s');
+			pNr += shell.CountOrbitals('p');
+			dNr += shell.CountOrbitals('d');
+			fNr += shell.CountOrbitals('f');
+			gNr += shell.CountOrbitals('g');
+			hNr += shell.CountOrbitals('h');
+		}
+
+		bool addComma = false;
+		if (sNr > 0) {
+			orbitalsStr << sNr << 's';
+			addComma = true;
+		}
+		if (pNr > 0) {
+			if (addComma) orbitalsStr << ',';
+			orbitalsStr << pNr << 'p';
+		}
+		if (dNr > 0) {
+			if (addComma) orbitalsStr << ',';
+			orbitalsStr << dNr << 'd';
+		}
+		if (fNr > 0) {
+			if (addComma) orbitalsStr << ',';
+			orbitalsStr << fNr << 'f';
+		}
+		if (gNr > 0) {
+			if (addComma) orbitalsStr << ',';
+			orbitalsStr << gNr << 'g';
+		}
+		if (hNr > 0) {
+			if (addComma) orbitalsStr << ',';
+			orbitalsStr << hNr << 'h';
+		}
+		file << orbitalsStr.str() << ") -> [";
+
+		sNr = 0;
+		pNr = 0;
+		dNr = 0;
+		fNr = 0;
+		gNr = 0;
+		hNr = 0;
+		orbitalsStr.seekp(0);
+
+		for (const auto& shell : atom.shells)
+		{
+			sNr += shell.CountContractedOrbitals('s');
+			pNr += shell.CountContractedOrbitals('p');
+			dNr += shell.CountContractedOrbitals('d');
+			fNr += shell.CountContractedOrbitals('f');
+			gNr += shell.CountContractedOrbitals('g');
+			hNr += shell.CountContractedOrbitals('h');
+		}
+
+		addComma = false;
+		if (sNr > 0) {
+			orbitalsStr << sNr << 's';
+			addComma = true;
+		}
+		if (pNr > 0) {
+			if (addComma) orbitalsStr << ',';
+			orbitalsStr << pNr << 'p';
+		}
+		if (dNr > 0) {
+			if (addComma) orbitalsStr << ',';
+			orbitalsStr << dNr << 'd';
+		}
+		if (fNr > 0) {
+			if (addComma) orbitalsStr << ',';
+			orbitalsStr << fNr << 'f';
+		}
+		if (gNr > 0) {
+			if (addComma) orbitalsStr << ',';
+			orbitalsStr << gNr << 'g';
+		}
+		if (hNr > 0) {
+			if (addComma) orbitalsStr << ',';
+			orbitalsStr << hNr << 'h';
+		}
+
+		file << orbitalsStr.str() << "]" << std::endl;
+
+		for (const auto& shell : atom.shells)
+		{
+			file << ChemUtils::GetAtomNameForZ(atom.Z) << "    " << shell.GetShellString() << std::endl;
+
+			SaveShell(file, shell);
+		}
+	}
+
+	void Basis::SaveShell(std::ofstream& file, const Orbitals::ContractedGaussianShell& shell)
+	{
+		for (int i = 0; i < static_cast<int>(shell.basisFunctions.front().gaussianOrbitals.size()); ++i)
+		{
+			bool first = true;
+			for (int j = 0; j < static_cast<int>(shell.basisFunctions.size());)
+			{
+				auto& orbital = shell.basisFunctions[j];
+
+				file << "      ";
+				if (first)
+				{
+					first = false;
+					file << orbital.gaussianOrbitals[i].alpha << "      ";
+				}
+
+				file << orbital.gaussianOrbitals[i].coefficient;
+
+				switch (orbital.gaussianOrbitals[i].AtomicOrbital())
+				{
+				default:
+				case 's':
+					++j;
+					break;
+				case 'p':
+					j += Orbitals::QuantumNumbers::QuantumNumbers::NumOrbitals(1);
+					break;
+				case 'd':
+					j += Orbitals::QuantumNumbers::QuantumNumbers::NumOrbitals(2);
+					break;
+				case 'f':
+					j += Orbitals::QuantumNumbers::QuantumNumbers::NumOrbitals(3);
+					break;
+				case 'g':
+					j += Orbitals::QuantumNumbers::QuantumNumbers::NumOrbitals(4);
+					break;
+				case 'h':
+					j += Orbitals::QuantumNumbers::QuantumNumbers::NumOrbitals(5);
+					break;
+				}
+			}
+
+			file << std::endl;
+		}
 	}
 
 }
