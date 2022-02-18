@@ -166,17 +166,9 @@ namespace Chemistry {
 		int gNr = 0;
 		int hNr = 0;
 
-		std::stringstream orbitalsStr;
+		CountOrbitals(atom, sNr, pNr, dNr, fNr, gNr, hNr);
 
-		for (const auto& shell : atom.shells)
-		{
-			sNr += shell.CountOrbitals('s');
-			pNr += shell.CountOrbitals('p');
-			dNr += shell.CountOrbitals('d');
-			fNr += shell.CountOrbitals('f');
-			gNr += shell.CountOrbitals('g');
-			hNr += shell.CountOrbitals('h');
-		}
+		std::stringstream orbitalsStr;
 
 		bool addComma = false;
 		if (sNr > 0) {
@@ -211,17 +203,10 @@ namespace Chemistry {
 		fNr = 0;
 		gNr = 0;
 		hNr = 0;
-		orbitalsStr.seekp(0);
 
-		for (const auto& shell : atom.shells)
-		{
-			sNr += shell.CountContractedOrbitals('s');
-			pNr += shell.CountContractedOrbitals('p');
-			dNr += shell.CountContractedOrbitals('d');
-			fNr += shell.CountContractedOrbitals('f');
-			gNr += shell.CountContractedOrbitals('g');
-			hNr += shell.CountContractedOrbitals('h');
-		}
+		CountContractedOrbitals(atom, sNr, pNr, dNr, fNr, gNr, hNr);
+
+		orbitalsStr.seekp(0);
 
 		addComma = false;
 		if (sNr > 0) {
@@ -258,6 +243,33 @@ namespace Chemistry {
 			SaveShell(file, shell);
 		}
 	}
+
+	void Basis::CountOrbitals(const Systems::AtomWithShells& atom, int& sNr, int& pNr, int& dNr, int& fNr, int& gNr, int& hNr)
+	{
+		for (const auto& shell : atom.shells)
+		{
+			sNr += shell.CountOrbitals('s');
+			pNr += shell.CountOrbitals('p');
+			dNr += shell.CountOrbitals('d');
+			fNr += shell.CountOrbitals('f');
+			gNr += shell.CountOrbitals('g');
+			hNr += shell.CountOrbitals('h');
+		}
+	}
+
+	void Basis::CountContractedOrbitals(const Systems::AtomWithShells& atom, int& sNr, int& pNr, int& dNr, int& fNr, int& gNr, int& hNr)
+	{
+		for (const auto& shell : atom.shells)
+		{
+			sNr += shell.CountContractedOrbitals('s');
+			pNr += shell.CountContractedOrbitals('p');
+			dNr += shell.CountContractedOrbitals('d');
+			fNr += shell.CountContractedOrbitals('f');
+			gNr += shell.CountContractedOrbitals('g');
+			hNr += shell.CountContractedOrbitals('h');
+		}
+	}
+
 
 	void Basis::SaveShell(std::ofstream& file, const Orbitals::ContractedGaussianShell& shell)
 	{

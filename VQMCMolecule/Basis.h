@@ -19,6 +19,8 @@ namespace Chemistry {
 	protected:
 		void SaveAtom(std::ofstream& file, const Systems::AtomWithShells& atom);
 		void SaveShell(std::ofstream& file, const Orbitals::ContractedGaussianShell& shell);
+		void CountOrbitals(const Systems::AtomWithShells& atom, int& sNr, int& pNr, int& dNr, int& fNr, int& gNr, int& hNr);
+		void CountContractedOrbitals(const Systems::AtomWithShells& atom, int& sNr, int& pNr, int& dNr, int& fNr, int& gNr, int& hNr);
 	};
 
 }
