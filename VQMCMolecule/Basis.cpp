@@ -23,40 +23,14 @@ namespace Chemistry {
 
 		std::string line;
 		std::regex ignore("^\\s*(#|BASIS|END).*$|^\\s*$");
-		std::regex shell("^(\\w+)\\s+(\\w+)\\s*$");
 		std::regex number("[+-]?[0-9]*\\.?[0-9]+((E|D)[+-][0-9]+)?");
-
-		std::smatch match;
 
 		std::string shellName;
 
 		while (std::getline(file, line))
 		{
 			if (std::regex_match(line, ignore)) continue;
-			else if (std::regex_match(line, match, shell))
-			{
-				unsigned int Z = ChemUtils::GetZForAtom(match[1].str().c_str());
-
-				assert(Z > 0);
-
-				//if (Z <= 0) AfxMessageBox(L"Unknown atom!");
-
-				// it's a new atom
-				if (!atoms.size() || atoms.back().Z != Z)
-				{
-					Systems::AtomWithShells atom(Z);
-					atoms.emplace_back(std::move(atom));
-				}
-
-				shellName = match[2].str();
-
-				//TRACE("Atom: %s\n", match[1].str().c_str());
-				//TRACE("Shell: %s\n", shellName.c_str());
-
-				// this doesn't simply add the shell object, it adds the orbitals in it as well
-				atoms.back().AddShell(shellName);
-			}
-			else
+			else if (!LoadShell(line, shellName))
 			{
 				std::sregex_iterator it(line.begin(), line.end(), number);
 				std::sregex_iterator end;
@@ -95,30 +69,7 @@ namespace Chemistry {
 						// the next values in the line are the coefficients
 						// one for each letter, for example for 'SP', one for S, one for P
 
-						const auto c = shellName.at(orbital);
-
-						int numberOfGaussiansInOrbital = 1;
-						switch (tolower(c))
-						{
-						case 's':
-							numberOfGaussiansInOrbital = 1;
-							break;
-						case 'p':
-							numberOfGaussiansInOrbital = Orbitals::QuantumNumbers::QuantumNumbers::NumOrbitals(1);
-							break;
-						case 'd':
-							numberOfGaussiansInOrbital = Orbitals::QuantumNumbers::QuantumNumbers::NumOrbitals(2);
-							break;
-						case 'f':
-							numberOfGaussiansInOrbital = Orbitals::QuantumNumbers::QuantumNumbers::NumOrbitals(3);
-							break;
-						case 'g':
-							numberOfGaussiansInOrbital = Orbitals::QuantumNumbers::QuantumNumbers::NumOrbitals(4);
-							break;
-						case 'h':
-							numberOfGaussiansInOrbital = Orbitals::QuantumNumbers::QuantumNumbers::NumOrbitals(5);
-							break;
-						}
+						int numberOfGaussiansInOrbital = GetNumberOfGaussiansInOrbital(shellName, orbital);
 
 						for (int i = 0; i < numberOfGaussiansInOrbital; ++i)
 						{
@@ -135,6 +86,69 @@ namespace Chemistry {
 				}
 			}
 		}
+	}
+
+	int Basis::GetNumberOfGaussiansInOrbital(const std::string& shellName, int orbital)
+	{
+		int numberOfGaussiansInOrbital = 1;
+		switch (tolower(shellName.at(orbital)))
+		{
+		case 's':
+			numberOfGaussiansInOrbital = 1;
+			break;
+		case 'p':
+			numberOfGaussiansInOrbital = Orbitals::QuantumNumbers::QuantumNumbers::NumOrbitals(1);
+			break;
+		case 'd':
+			numberOfGaussiansInOrbital = Orbitals::QuantumNumbers::QuantumNumbers::NumOrbitals(2);
+			break;
+		case 'f':
+			numberOfGaussiansInOrbital = Orbitals::QuantumNumbers::QuantumNumbers::NumOrbitals(3);
+			break;
+		case 'g':
+			numberOfGaussiansInOrbital = Orbitals::QuantumNumbers::QuantumNumbers::NumOrbitals(4);
+			break;
+		case 'h':
+			numberOfGaussiansInOrbital = Orbitals::QuantumNumbers::QuantumNumbers::NumOrbitals(5);
+			break;
+		}
+
+		return numberOfGaussiansInOrbital;
+	}
+
+
+	bool Basis::LoadShell(std::string& line, std::string& shellName)
+	{
+		std::regex shell("^(\\w+)\\s+(\\w+)\\s*$");
+		std::smatch match;
+
+		if (std::regex_match(line, match, shell))
+		{
+			const unsigned int Z = ChemUtils::GetZForAtom(match[1].str().c_str());
+
+			assert(Z > 0);
+
+			//if (Z <= 0) AfxMessageBox(L"Unknown atom!");
+
+			// it's a new atom
+			if (!atoms.size() || atoms.back().Z != Z)
+			{
+				Systems::AtomWithShells atom(Z);
+				atoms.emplace_back(std::move(atom));
+			}
+
+			shellName = match[2].str();
+
+			//TRACE("Atom: %s\n", match[1].str().c_str());
+			//TRACE("Shell: %s\n", shellName.c_str());
+
+			// this doesn't simply add the shell object, it adds the orbitals in it as well
+			atoms.back().AddShell(shellName);
+
+			return true;
+		}
+
+		return false;
 	}
 
 

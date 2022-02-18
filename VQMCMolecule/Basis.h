@@ -22,6 +22,9 @@ namespace Chemistry {
 		void CountOrbitals(const Systems::AtomWithShells& atom, int& sNr, int& pNr, int& dNr, int& fNr, int& gNr, int& hNr);
 		void CountContractedOrbitals(const Systems::AtomWithShells& atom, int& sNr, int& pNr, int& dNr, int& fNr, int& gNr, int& hNr);
 		void GenerateOrbitalsString(std::stringstream& orbitalsStr, int sNr, int pNr, int dNr, int fNr, int gNr, int hNr);
+
+		bool LoadShell(std::string& line, std::string& shellName);
+		static int GetNumberOfGaussiansInOrbital(const std::string& shellName, int orbital);
 	};
 
 }
