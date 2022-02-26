@@ -46,6 +46,8 @@ protected:
 	double getOverlap(const Systems::AtomWithShells& atom1, const Orbitals::ContractedGaussianOrbital& orbital1, const Systems::AtomWithShells& atom2, const Orbitals::ContractedGaussianOrbital& orbital2, bool extendForKinetic = false);
 	double getOverlap(const Systems::AtomWithShells& atom1, const Orbitals::GaussianOrbital& gaussian1, const Systems::AtomWithShells& atom2, const Orbitals::GaussianOrbital& gaussian2, bool extendForKinetic = false);
 
+	void PickValenceOrbitalsToCombine(std::vector<Orbitals::ContractedGaussianOrbital>& firstAtomOrbsToMerge, std::vector<Orbitals::ContractedGaussianOrbital>& secondAtomOrbsToMerge, std::vector<std::tuple<std::tuple<unsigned int, unsigned int>, double>>& overlapsVector);
+
 	std::vector<Orbitals::VQMCOrbital> orbitals;
 
 	std::map < std::tuple<unsigned int, unsigned int, double, double>, GaussianIntegrals::GaussianOverlap> overlapIntegralsMap;

@@ -51,34 +51,9 @@ void Wavefunction::Init(const Systems::Molecule& molecule, Random& random, doubl
 	std::vector<Orbitals::ContractedGaussianOrbital> firstAtomOrbsToMerge;
 	std::vector<Orbitals::ContractedGaussianOrbital> secondAtomOrbsToMerge;
 
-	size_t lastShell = molecule.atoms[0].shells.size() - 1;
-
-	for (unsigned int curOrb = 0; curOrb < molecule.atoms[0].shells[lastShell].basisFunctions.size(); ++curOrb)
-		firstAtomOrbsToMerge.push_back(molecule.atoms[0].shells[lastShell].basisFunctions[curOrb]);
-
-
 	std::vector<std::tuple<std::tuple<unsigned int, unsigned int>, double>> overlapsVector;
 
-	if (molecule.atoms.size() > 1)
-	{
-		lastShell = molecule.atoms[1].shells.size() - 1;
-
-		for (unsigned int curOrb = 0; curOrb < molecule.atoms[1].shells[lastShell].basisFunctions.size(); ++curOrb)
-			secondAtomOrbsToMerge.push_back(molecule.atoms[1].shells[lastShell].basisFunctions[curOrb]);
-
-		// compute the overlaps
-		for (unsigned int firstOrb = 0; firstOrb < firstAtomOrbsToMerge.size(); ++firstOrb)
-			for (unsigned int secondOrb = 0; secondOrb < secondAtomOrbsToMerge.size(); ++secondOrb)
-			{
-				const double Overlap = getOverlap(molecule.atoms[0], firstAtomOrbsToMerge[firstOrb], molecule.atoms[1], secondAtomOrbsToMerge[secondOrb]);
-
-				overlapsVector.emplace_back(std::make_tuple(std::make_tuple(firstOrb, secondOrb), Overlap));
-			}
-
-
-		// now sort them by the abs of overlap
-		std::sort(overlapsVector.begin(), overlapsVector.end(), [](const auto& val1, const auto& val2) -> bool { return abs(std::get<1>(val1)) > abs(std::get<1>(val2)); });
-	}
+	PickValenceOrbitalsToCombine(firstAtomOrbsToMerge, secondAtomOrbsToMerge, overlapsVector);
 
 
 	// distribute the electrons randomly and add the orbitals for the 'core' electrons
@@ -110,7 +85,7 @@ void Wavefunction::Init(const Systems::Molecule& molecule, Random& random, doubl
 	assert(curParticle == molecule.alphaElectrons);
 
 
-	// now, combine the valence orbitals in 'molecular' ones for 'alpha' electrons
+	// now, combine the valence orbitals in 'molecular' ones
 	bool firstPass = true;
 	for (unsigned int i = 0; orbitals.size() < molecule.alphaElectrons; ++i)
 	{
@@ -184,6 +159,38 @@ void Wavefunction::Init(const Systems::Molecule& molecule, Random& random, doubl
 	SpinUpInvSlater.resize(molecule.alphaElectrons, molecule.alphaElectrons);
 	SpinDownInvSlater.resize(molecule.betaElectrons, molecule.betaElectrons);
 }
+
+void Wavefunction::PickValenceOrbitalsToCombine(std::vector<Orbitals::ContractedGaussianOrbital>& firstAtomOrbsToMerge, std::vector<Orbitals::ContractedGaussianOrbital>& secondAtomOrbsToMerge, std::vector<std::tuple<std::tuple<unsigned int, unsigned int>, double>>& overlapsVector)
+{
+	if (!m_molecule) return;
+
+	size_t lastShell = m_molecule->atoms[0].shells.size() - 1;
+
+	for (unsigned int curOrb = 0; curOrb < m_molecule->atoms[0].shells[lastShell].basisFunctions.size(); ++curOrb)
+		firstAtomOrbsToMerge.push_back(m_molecule->atoms[0].shells[lastShell].basisFunctions[curOrb]);
+
+	if (m_molecule->atoms.size() > 1)
+	{
+		lastShell = m_molecule->atoms[1].shells.size() - 1;
+
+		for (unsigned int curOrb = 0; curOrb < m_molecule->atoms[1].shells[lastShell].basisFunctions.size(); ++curOrb)
+			secondAtomOrbsToMerge.push_back(m_molecule->atoms[1].shells[lastShell].basisFunctions[curOrb]);
+
+		// compute the overlaps
+		for (unsigned int firstOrb = 0; firstOrb < firstAtomOrbsToMerge.size(); ++firstOrb)
+			for (unsigned int secondOrb = 0; secondOrb < secondAtomOrbsToMerge.size(); ++secondOrb)
+			{
+				const double Overlap = getOverlap(m_molecule->atoms[0], firstAtomOrbsToMerge[firstOrb], m_molecule->atoms[1], secondAtomOrbsToMerge[secondOrb]);
+
+				overlapsVector.emplace_back(std::make_tuple(std::make_tuple(firstOrb, secondOrb), Overlap));
+			}
+
+
+		// now sort them by the abs of overlap
+		std::sort(overlapsVector.begin(), overlapsVector.end(), [](const auto& val1, const auto& val2) -> bool { return abs(std::get<1>(val1)) > abs(std::get<1>(val2)); });
+	}
+}
+
 
 
 void Wavefunction::ComputeSlaterInv()
