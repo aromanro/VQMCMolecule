@@ -14,62 +14,14 @@ void VQMCMolecule::Compute(const Options& opt, const Chemistry::Basis& basisSTOX
 {    
     Systems::AtomWithShells atom1;
     Systems::AtomWithShells atom2;
-    for (auto& atom : basisSTOXG.atoms)
-    {
-        if (atom.Z == opt.Z1)
-        {
-            atom1 = atom;
-            if (!opt.useZ2) break;
-        }
-        
-        if (atom.Z == opt.Z2)
-            atom2 = atom;
-    }
-
     Systems::Molecule molecule;
 
-    molecule.atoms.push_back(atom1);
-    
-    std::cout << "Starting " << Chemistry::ChemUtils::GetAtomNameForZ(atom1.Z);
-
-    if (opt.useZ2)
-    {
-        atom2.position.X = opt.distance;
-        molecule.atoms.push_back(atom2);
-
-        if (atom2.Z != atom1.Z)
-            std::cout << Chemistry::ChemUtils::GetAtomNameForZ(atom2.Z);
-        else
-            std::cout << "2";
-    }
-
-    std::cout << " computations, using ";
-    
-    switch (opt.basis)
-    {
-    case 0:
-        std::cout << "STO3G";
-        break;
-    case 1:
-        std::cout << "STO6G";
-        break;
-    }
-        
-    std::cout << std::endl;
-
-    molecule.Init();
+    InitMolecule(opt, basisSTOXG, atom1, atom2, molecule);
 
     const int nrWalkers = opt.nrWalkers;
 
     std::vector<VQMC> vqmcWalkers(nrWalkers);
-    
-    Random initialSeed;
-    for (unsigned int i = 0; i < static_cast<unsigned int>(nrWalkers); ++i)
-    {
-        vqmcWalkers[i].SetDeltat(opt.deltat);
-        vqmcWalkers[i].Init(molecule, static_cast<int>(initialSeed.getZeroOne() * 1E5));
-    }
-
+    InitWalkers(vqmcWalkers, molecule, opt.deltat);
 
     const unsigned int NrE = molecule.alphaElectrons + molecule.betaElectrons;
     
@@ -149,10 +101,10 @@ void VQMCMolecule::Compute(const Options& opt, const Chemistry::Basis& basisSTOX
 
         const unsigned int moves = NrE * cycleSteps;
 
+        std::cout << "Step: " << i + 1 << "\tEnergy: " << E + nuclearRepulsionEnergy << "\tError estimation: " << sqrt(abs(E2 - E * E) / moves) << "\tdE/db= " << dEdB << "\tBeta: " << beta << std::endl;
+
         if (0 == i)
             thermalSteps = opt.firstStageThermalSteps * NrE;
-
-        std::cout << "Step: " << i + 1 << "\tEnergy: " << E + nuclearRepulsionEnergy << "\tError estimation: " << sqrt(abs(E2 - E * E) / moves) << "\tdE/db= " << dEdB << "\tBeta: " << beta << std::endl;
 
         if (i == opt.firstStageGradientDescentSteps)
         {
@@ -180,3 +132,58 @@ void VQMCMolecule::Compute(const Options& opt, const Chemistry::Basis& basisSTOX
     std::cout << "Duration: " << duration << " seconds" << std::endl;
 }
 
+void VQMCMolecule::InitMolecule(const Options& opt, const Chemistry::Basis& basisSTOXG, Systems::AtomWithShells& atom1, Systems::AtomWithShells& atom2, Systems::Molecule& molecule)
+{
+    for (auto& atom : basisSTOXG.atoms)
+    {
+        if (atom.Z == opt.Z1)
+        {
+            atom1 = atom;
+            if (!opt.useZ2) break;
+        }
+
+        if (atom.Z == opt.Z2)
+            atom2 = atom;
+    }
+
+    molecule.atoms.push_back(atom1);
+
+    std::cout << "Starting " << Chemistry::ChemUtils::GetAtomNameForZ(atom1.Z);
+
+    if (opt.useZ2)
+    {
+        atom2.position.X = opt.distance;
+        molecule.atoms.push_back(atom2);
+
+        if (atom2.Z != atom1.Z)
+            std::cout << Chemistry::ChemUtils::GetAtomNameForZ(atom2.Z);
+        else
+            std::cout << "2";
+    }
+
+    std::cout << " computations, using ";
+
+    switch (opt.basis)
+    {
+    case 0:
+        std::cout << "STO3G";
+        break;
+    case 1:
+        std::cout << "STO6G";
+        break;
+    }
+
+    std::cout << std::endl;
+
+    molecule.Init();
+}
+
+void VQMCMolecule::InitWalkers(std::vector<VQMC>& vqmcWalkers, Systems::Molecule& molecule, double deltat)
+{
+    Random initialSeed;
+    for (unsigned int i = 0; i < vqmcWalkers.size(); ++i)
+    {
+        vqmcWalkers[i].SetDeltat(deltat);
+        vqmcWalkers[i].Init(molecule, static_cast<int>(initialSeed.getZeroOne() * 1E5));
+    }
+}
