@@ -59,30 +59,7 @@ void Wavefunction::Init(const Systems::Molecule& molecule, Random& random, doubl
 	// distribute the electrons randomly and add the orbitals for the 'core' electrons
 
 	// 'alpha' electrons:
-
-	for (unsigned int curAtom = 0; curAtom < molecule.atoms.size(); ++curAtom)
-	{
-		accumAtomParticles += molecule.atoms[curAtom].alphaElectrons;
-
-		for (unsigned int curShell = 0; curShell < molecule.atoms[curAtom].shells.size(); ++curShell)
-		{
-			const bool isOnLastShell = curShell == molecule.atoms[curAtom].shells.size() - 1;
-
-			for (unsigned int curOrb = 0; curOrb < molecule.atoms[curAtom].shells[curShell].basisFunctions.size(); ++curOrb)
-			{
-				if (curParticle >= accumAtomParticles)
-					break;
-
-				if (!isOnLastShell || molecule.atoms.size() == 1)
-					orbitals.push_back(molecule.atoms[curAtom].shells[curShell].basisFunctions[curOrb]);
-
-				currentParticles[curParticle] = molecule.atoms[curAtom].position + random.getRandomVector() * radiusInit;
-				++curParticle;
-			}
-		}
-	}
-
-	assert(curParticle == molecule.alphaElectrons);
+	DistributeAlphaElectronsAndAddCoreOrbitals(accumAtomParticles, curParticle, random, radiusInit);
 
 
 	// now, combine the valence orbitals in 'molecular' ones
@@ -109,30 +86,7 @@ void Wavefunction::Init(const Systems::Molecule& molecule, Random& random, doubl
 	// 'beta' electrons:
 	curParticle = 0;
 	accumAtomParticles = 0;
-
-	for (unsigned int curAtom = 0; curAtom < molecule.atoms.size(); ++curAtom)
-	{
-		accumAtomParticles += molecule.atoms[curAtom].betaElectrons;
-
-		for (unsigned int curShell = 0; curShell < molecule.atoms[curAtom].shells.size(); ++curShell)
-		{
-			const bool isOnLastShell = curShell == molecule.atoms[curAtom].shells.size() - 1;
-
-			for (unsigned int curOrb = 0; curOrb < molecule.atoms[curAtom].shells[curShell].basisFunctions.size(); ++curOrb)
-			{
-				if (curParticle >= accumAtomParticles)
-					break;
-
-				if (!isOnLastShell || molecule.atoms.size() == 1)
-					orbitals.push_back(molecule.atoms[curAtom].shells[curShell].basisFunctions[curOrb]);
-
-				currentParticles[static_cast<unsigned long long int>(molecule.alphaElectrons) + curParticle] = molecule.atoms[curAtom].position + random.getRandomVector() * radiusInit;
-				++curParticle;
-			}
-		}
-	}
-
-	assert(curParticle == molecule.betaElectrons);
+	DistributeBetaElectronsAndAddCoreOrbitals(accumAtomParticles, curParticle, random, radiusInit);
 
 	const unsigned int totalElectrons = molecule.alphaElectrons + molecule.betaElectrons;
 	firstPass = true;
@@ -191,7 +145,63 @@ void Wavefunction::PickValenceOrbitalsToCombine(std::vector<Orbitals::Contracted
 	}
 }
 
+void Wavefunction::DistributeAlphaElectronsAndAddCoreOrbitals(unsigned int& accumAtomParticles, unsigned int& curParticle, Random& random, double radiusInit)
+{
+	if (!m_molecule) return;
 
+	for (unsigned int curAtom = 0; curAtom < m_molecule->atoms.size(); ++curAtom)
+	{
+		accumAtomParticles += m_molecule->atoms[curAtom].alphaElectrons;
+
+		for (unsigned int curShell = 0; curShell < m_molecule->atoms[curAtom].shells.size(); ++curShell)
+		{
+			const bool isOnLastShell = curShell == m_molecule->atoms[curAtom].shells.size() - 1;
+
+			for (unsigned int curOrb = 0; curOrb < m_molecule->atoms[curAtom].shells[curShell].basisFunctions.size(); ++curOrb)
+			{
+				if (curParticle >= accumAtomParticles)
+					break;
+
+				if (!isOnLastShell || m_molecule->atoms.size() == 1)
+					orbitals.push_back(m_molecule->atoms[curAtom].shells[curShell].basisFunctions[curOrb]);
+
+				currentParticles[curParticle] = m_molecule->atoms[curAtom].position + random.getRandomVector() * radiusInit;
+				++curParticle;
+			}
+		}
+	}
+
+	assert(curParticle == m_molecule->alphaElectrons);
+}
+
+void Wavefunction::DistributeBetaElectronsAndAddCoreOrbitals(unsigned int& accumAtomParticles, unsigned int& curParticle, Random& random, double radiusInit)
+{
+	if (!m_molecule) return;
+
+	for (unsigned int curAtom = 0; curAtom < m_molecule->atoms.size(); ++curAtom)
+	{
+		accumAtomParticles += m_molecule->atoms[curAtom].betaElectrons;
+
+		for (unsigned int curShell = 0; curShell < m_molecule->atoms[curAtom].shells.size(); ++curShell)
+		{
+			const bool isOnLastShell = curShell == m_molecule->atoms[curAtom].shells.size() - 1;
+
+			for (unsigned int curOrb = 0; curOrb < m_molecule->atoms[curAtom].shells[curShell].basisFunctions.size(); ++curOrb)
+			{
+				if (curParticle >= accumAtomParticles)
+					break;
+
+				if (!isOnLastShell || m_molecule->atoms.size() == 1)
+					orbitals.push_back(m_molecule->atoms[curAtom].shells[curShell].basisFunctions[curOrb]);
+
+				currentParticles[static_cast<unsigned long long int>(m_molecule->alphaElectrons) + curParticle] = m_molecule->atoms[curAtom].position + random.getRandomVector() * radiusInit;
+				++curParticle;
+			}
+		}
+	}
+
+	assert(curParticle == m_molecule->betaElectrons);
+}
 
 void Wavefunction::ComputeSlaterInv()
 {

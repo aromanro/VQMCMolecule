@@ -48,6 +48,9 @@ protected:
 
 	void PickValenceOrbitalsToCombine(std::vector<Orbitals::ContractedGaussianOrbital>& firstAtomOrbsToMerge, std::vector<Orbitals::ContractedGaussianOrbital>& secondAtomOrbsToMerge, std::vector<std::tuple<std::tuple<unsigned int, unsigned int>, double>>& overlapsVector);
 
+	void DistributeAlphaElectronsAndAddCoreOrbitals(unsigned int& accumAtomParticles, unsigned int& curParticle, Random& random, double radiusInit);
+	void DistributeBetaElectronsAndAddCoreOrbitals(unsigned int& accumAtomParticles, unsigned int& curParticle, Random& random, double radiusInit);
+
 	std::vector<Orbitals::VQMCOrbital> orbitals;
 
 	std::map < std::tuple<unsigned int, unsigned int, double, double>, GaussianIntegrals::GaussianOverlap> overlapIntegralsMap;
