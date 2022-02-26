@@ -1,13 +1,9 @@
 #include <iostream>
 #include <fstream>
 #include <chrono>
-#include <future>
 
-#include "Basis.h"
-#include "Molecule.h"
-#include "VQMC.h"
-#include "VQMCMolecule.h"
 #include "ChemUtils.h"
+#include "VQMCMolecule.h"
 
 
 void VQMCMolecule::Compute(const Options& opt, const Chemistry::Basis& basisSTOXG)
@@ -82,26 +78,7 @@ void VQMCMolecule::Compute(const Options& opt, const Chemistry::Basis& basisSTOX
             );
         }
 
-        double E = 0;
-        double E2 = 0;
-        double dEdB = 0;
-        for (auto& task : tasks)
-        {
-            double Ep;
-            double E2p;
-            double dEdBp;
-            std::tie(Ep, E2p, dEdBp) = task.get();
-            E += Ep;
-            E2 += E2p;
-            dEdB += dEdBp;
-        }
-        E /= nrWalkers;
-        E2 /= nrWalkers;
-        dEdB /= nrWalkers;
-
-        const unsigned int moves = NrE * cycleSteps;
-
-        std::cout << "Step: " << i + 1 << "\tEnergy: " << E + nuclearRepulsionEnergy << "\tError estimation: " << sqrt(abs(E2 - E * E) / moves) << "\tdE/db= " << dEdB << "\tBeta: " << beta << std::endl;
+        const double dEdB = GetValuesFromThreads(tasks, NrE, cycleSteps, nrWalkers, i, nuclearRepulsionEnergy, beta);
 
         if (0 == i)
             thermalSteps = opt.firstStageThermalSteps * NrE;
@@ -186,4 +163,30 @@ void VQMCMolecule::InitWalkers(std::vector<VQMC>& vqmcWalkers, Systems::Molecule
         vqmcWalkers[i].SetDeltat(deltat);
         vqmcWalkers[i].Init(molecule, static_cast<int>(initialSeed.getZeroOne() * 1E5));
     }
+}
+
+double VQMCMolecule::GetValuesFromThreads(std::vector<std::future<std::tuple<double, double, double>>>& tasks, const unsigned int NrE, int cycleSteps, int nrWalkers, int i, double nuclearRepulsionEnergy, double beta)
+{
+    double E = 0;
+    double E2 = 0;
+    double dEdB = 0;
+    for (auto& task : tasks)
+    {
+        double Ep;
+        double E2p;
+        double dEdBp;
+        std::tie(Ep, E2p, dEdBp) = task.get();
+        E += Ep;
+        E2 += E2p;
+        dEdB += dEdBp;
+    }
+    E /= nrWalkers;
+    E2 /= nrWalkers;
+    dEdB /= nrWalkers;
+
+    const unsigned int moves = NrE * cycleSteps;
+
+    std::cout << "Step: " << i + 1 << "\tEnergy: " << E + nuclearRepulsionEnergy << "\tError estimation: " << sqrt(abs(E2 - E * E) / moves) << "\tdE/db= " << dEdB << "\tBeta: " << beta << std::endl;
+
+    return dEdB;
 }
