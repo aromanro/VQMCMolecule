@@ -6,7 +6,7 @@
 class VQMC
 {
 public:
-	VQMC(int addseed = 0, double deltat = 0.005) 
+	VQMC(double deltat = 0.005) 
 		: dt(deltat)
 	{
 		sdt = sqrt(dt);

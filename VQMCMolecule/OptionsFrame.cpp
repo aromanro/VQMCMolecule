@@ -198,10 +198,10 @@ std::vector<wxString> OptionsFrame::GetAtoms()
 	{
 		strings.emplace_back(Chemistry::ChemUtils::GetAtomNameForZ(atom.Z));
 
-		if (atom.Z == options.Z1)
+		if (atom.Z == static_cast<unsigned int>(options.Z1))
 			sel1 = s;
 
-		if (atom.Z == options.Z2)
+		if (atom.Z == static_cast<unsigned int>(options.Z2))
 			sel2 = s;
 
 		++s;

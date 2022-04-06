@@ -350,7 +350,6 @@ double Wavefunction::LocalKineticEnergy(double beta) const
 		// Jastrow 
 		// see 16.31 and 16.34 for gradient
 		// 16.38 and 16.39 for laplacian
-		const unsigned int Ne = m_molecule->alphaElectrons + m_molecule->betaElectrons;
 		Vector3D<double> logGradientJastrowPart;
 		for (unsigned int i = 0; i < Ne; ++i)
 		{

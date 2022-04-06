@@ -113,13 +113,13 @@ void VQMCMolecule::InitMolecule(const Options& opt, const Chemistry::Basis& basi
 {
     for (auto& atom : basisSTOXG.atoms)
     {
-        if (atom.Z == opt.Z1)
+        if (atom.Z == static_cast<unsigned int>(opt.Z1))
         {
             atom1 = atom;
             if (!opt.useZ2) break;
         }
 
-        if (atom.Z == opt.Z2)
+        if (atom.Z == static_cast<unsigned int>(opt.Z2))
             atom2 = atom;
     }
 
