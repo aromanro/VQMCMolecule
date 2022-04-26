@@ -217,6 +217,8 @@ wxPanel* OptionsFrame::CreateMoleculeSettingsPage(wxBookCtrlBase* parent)
 
 
 	wxBoxSizer* topSizer = new wxBoxSizer(wxVERTICAL);
+	topSizer->AddSpacer(5);
+
 	wxBoxSizer* item0 = new wxBoxSizer(wxVERTICAL);
 
 	// ***********************************************************************************
@@ -226,44 +228,50 @@ wxPanel* OptionsFrame::CreateMoleculeSettingsPage(wxBookCtrlBase* parent)
 	// add controls
 	
 	wxStaticText* label = new wxStaticText(panel, wxID_STATIC, "First atom:", wxDefaultPosition, wxSize(100, -1), wxALIGN_RIGHT);
-	itemSizer->Add(label, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	itemSizer->Add(label, 0, wxALIGN_CENTER_VERTICAL , 5);
 
 	std::vector<wxString> strings = GetAtoms();
 
 	wxChoice* atom1Choice = new wxChoice(panel, FIRST_ATOM_ID, wxDefaultPosition, wxSize(100, -1), strings.size(), strings.data(), 0);
 
 	atom1Choice->SetSelection(sel1);
-	itemSizer->Add(atom1Choice, 1, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL | wxGROW, 5);
+	itemSizer->Add(atom1Choice, 1, wxGROW, 5);
 
 
 	label = new wxStaticText(panel, wxID_STATIC, "Second atom:", wxDefaultPosition, wxSize(100, -1), wxALIGN_RIGHT);
-	itemSizer->Add(label, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	itemSizer->Add(label, 0, wxALIGN_CENTER_VERTICAL , 5);
 
 	wxChoice* atom2Choice = new wxChoice(panel, SECOND_ATOM_ID, wxDefaultPosition, wxSize(100, -1), strings.size(), strings.data(), 0);
 
 	atom2Choice->SetSelection(sel2);
-	itemSizer->Add(atom2Choice, 1, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL | wxGROW, 5);
+	itemSizer->Add(atom2Choice, 1, wxGROW, 5);
+
+	itemSizer->AddSpacer(5);
 
 
-	item0->Add(itemSizer, 0, wxALL | wxGROW, 0);
+	item0->Add(itemSizer, 0, wxGROW, 0);
+	item0->AddSpacer(5);
 
 	// and so on...
 
 	itemSizer = new wxBoxSizer(wxHORIZONTAL);
+	itemSizer->AddSpacer(5);
 
 	wxCheckBox* checkBox = new wxCheckBox(panel, USE_Z2_ID, "Compute molecule (unchecked means computing only the atom selected in the first combo)");
-	itemSizer->Add(checkBox, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL);
+	itemSizer->Add(checkBox, 0, wxALIGN_CENTER_VERTICAL);
+	itemSizer->AddSpacer(5);
 
-	item0->Add(itemSizer, 0, wxALL | wxGROW, 0);
+	item0->Add(itemSizer, 0, wxGROW, 0);
+	item0->AddSpacer(5);
 
 	itemSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	label = new wxStaticText(panel, wxID_STATIC, "Distance:", wxDefaultPosition, wxSize(100, -1), wxALIGN_RIGHT);
-	itemSizer->Add(label, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	itemSizer->Add(label, 0, wxALIGN_CENTER_VERTICAL , 5);
 
 	wxString str = wxString::Format(wxT("%g"), options.distance);
 	wxTextCtrl* distanceCtrl = new wxTextCtrl(panel, DISTANCE_ID, str, wxDefaultPosition, wxSize(100, -1), 0);
-	itemSizer->Add(distanceCtrl, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL | wxGROW, 5);
+	itemSizer->Add(distanceCtrl, 0, wxGROW, 5);
 
 	if (!options.useZ2)
 	{
@@ -272,7 +280,7 @@ wxPanel* OptionsFrame::CreateMoleculeSettingsPage(wxBookCtrlBase* parent)
 	}
 
 
-	item0->Add(itemSizer, 0, wxALL | wxGROW, 0);
+	item0->Add(itemSizer, 0, wxGROW, 0);
 
 
 	// *************************
@@ -290,7 +298,7 @@ wxPanel* OptionsFrame::CreateMoleculeSettingsPage(wxBookCtrlBase* parent)
 
 	// *********************************
 
-	topSizer->Add(item0, 0, wxALL | wxGROW, 5);
+	topSizer->Add(item0, 0, wxGROW, 5);
 	panel->SetSizerAndFit(topSizer);
 
 
@@ -304,6 +312,8 @@ wxPanel* OptionsFrame::CreateComputationSettingsPage(wxBookCtrlBase* parent)
 
 
 	wxBoxSizer* topSizer = new wxBoxSizer(wxVERTICAL);
+	topSizer->AddSpacer(5);
+
 	wxBoxSizer* item0 = new wxBoxSizer(wxVERTICAL);
 
 	// ***********************************************************************************
@@ -313,73 +323,79 @@ wxPanel* OptionsFrame::CreateComputationSettingsPage(wxBookCtrlBase* parent)
 	// add controls
 
 	wxStaticText* label = new wxStaticText(panel, wxID_STATIC, "Nr threads:", wxDefaultPosition, wxSize(100, -1), wxALIGN_RIGHT);
-	itemSizer->Add(label, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	itemSizer->Add(label, 0, wxALIGN_CENTER_VERTICAL , 5);
 
 	wxString str = wxString::Format(wxT("%d"), options.nrThreads);
 	wxTextCtrl* nrThreadsCtrl = new wxTextCtrl(panel, NR_THREADS_ID, str, wxDefaultPosition, wxSize(80, -1), 0);
-	itemSizer->Add(nrThreadsCtrl, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL | wxGROW, 5);
+	itemSizer->Add(nrThreadsCtrl, 0, wxGROW, 5);
 
-	label = new wxStaticText(panel, wxID_STATIC, "Nr walkers:", wxDefaultPosition, wxSize(80, -1), wxALIGN_RIGHT);
-	itemSizer->Add(label, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	label = new wxStaticText(panel, wxID_STATIC, "Nr walkers:", wxDefaultPosition, wxSize(220, -1), wxALIGN_RIGHT);
+	itemSizer->Add(label, 0, wxALIGN_CENTER_VERTICAL , 5);
 
 	str = wxString::Format(wxT("%d"), options.nrWalkers);
 	wxTextCtrl* nrWalkersCtrl = new wxTextCtrl(panel, NR_WALKERS_ID, str, wxDefaultPosition, wxSize(80, -1), 0);
-	itemSizer->Add(nrWalkersCtrl, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL | wxGROW, 5);
+	itemSizer->Add(nrWalkersCtrl, 0, wxGROW, 5);
 
+	itemSizer->AddSpacer(5);
 
-	item0->Add(itemSizer, 0, wxALL | wxGROW, 0);
+	item0->Add(itemSizer, 0, wxGROW, 0);
+	item0->AddSpacer(5);
 
 	// and so on...
 
 	itemSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	label = new wxStaticText(panel, wxID_STATIC, "Gradient descent:", wxDefaultPosition, wxSize(100, -1), wxALIGN_RIGHT);
-	itemSizer->Add(label, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	itemSizer->Add(label, 0, wxALIGN_CENTER_VERTICAL , 5);
 
 	str = wxString::Format(wxT("%g"), options.gradDescParam);
 	wxTextCtrl* gradCtrl = new wxTextCtrl(panel, GRAD_PARAM_ID, str, wxDefaultPosition, wxSize(100, -1), 0);
-	itemSizer->Add(gradCtrl, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL | wxGROW, 5);
+	itemSizer->Add(gradCtrl, 0, wxGROW, 5);
 
 
-	label = new wxStaticText(panel, wxID_STATIC, "Delta t:", wxDefaultPosition, wxSize(100, -1), wxALIGN_RIGHT);
-	itemSizer->Add(label, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	label = new wxStaticText(panel, wxID_STATIC, "Delta t:", wxDefaultPosition, wxSize(200, -1), wxALIGN_RIGHT);
+	itemSizer->Add(label, 0, wxALIGN_CENTER_VERTICAL , 5);
 
 	str = wxString::Format(wxT("%g"), options.deltat);
 	wxTextCtrl* deltatCtrl = new wxTextCtrl(panel, DELTAT_ID, str, wxDefaultPosition, wxSize(100, -1), 0);
-	itemSizer->Add(deltatCtrl, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL | wxGROW, 5);
+	itemSizer->Add(deltatCtrl, 0, wxGROW, 5);
 
 
-	item0->Add(itemSizer, 0, wxALL | wxGROW, 0);
+	item0->Add(itemSizer, 0, wxGROW, 0);
+	item0->AddSpacer(5);
 
 	itemSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	label = new wxStaticText(panel, wxID_STATIC, "Beta (Jastrow):", wxDefaultPosition, wxSize(100, -1), wxALIGN_RIGHT);
-	itemSizer->Add(label, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	itemSizer->Add(label, 0, wxALIGN_CENTER_VERTICAL , 5);
 
 	str = wxString::Format(wxT("%g"), options.beta);
 	wxTextCtrl* betaCtrl = new wxTextCtrl(panel, BETA_ID, str, wxDefaultPosition, wxSize(100, -1), 0);
-	itemSizer->Add(betaCtrl, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL | wxGROW, 5);
+	itemSizer->Add(betaCtrl, 0, wxGROW, 5);
 
 
 	label = new wxStaticText(panel, wxID_STATIC, "Recompute Slater inv steps:", wxDefaultPosition, wxSize(200, -1), wxALIGN_RIGHT);
-	itemSizer->Add(label, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	itemSizer->Add(label, 0, wxALIGN_CENTER_VERTICAL , 5);
 
 	str = wxString::Format(wxT("%d"), options.cyclesRefresh);
 	wxTextCtrl* cyclesRefresgCtrl = new wxTextCtrl(panel, CYCLES_REFRESH_ID, str, wxDefaultPosition, wxSize(100, -1), 0);
-	itemSizer->Add(cyclesRefresgCtrl, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL | wxGROW, 5);
+	itemSizer->Add(cyclesRefresgCtrl, 0, wxGROW, 5);
 
-	item0->Add(itemSizer, 0, wxALL | wxGROW, 0);
+	item0->Add(itemSizer, 0, wxGROW, 0);
+	item0->AddSpacer(5);
 
 	itemSizer = new wxBoxSizer(wxHORIZONTAL);
+	itemSizer->AddSpacer(5);
 
 	wxArrayString choices;
 	choices.Add("STO3G");
 	choices.Add("STO6G");
 	
 	wxRadioBox* m_radioBox = new wxRadioBox(panel, BASIS_ID, "Basis", wxDefaultPosition, wxDefaultSize, choices, 2, wxRA_VERTICAL);
-	itemSizer->Add(m_radioBox, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	itemSizer->Add(m_radioBox, 0, wxALIGN_CENTER_VERTICAL , 5);
 
-	item0->Add(itemSizer, 0, wxGROW | wxALL, 0);
+	item0->Add(itemSizer, 0, wxGROW , 0);
+	item0->AddSpacer(5);
 
 	// *************************
 	// Validators
@@ -415,7 +431,7 @@ wxPanel* OptionsFrame::CreateComputationSettingsPage(wxBookCtrlBase* parent)
 
 	m_radioBox->SetValidator(wxGenericValidator(&options.basis));
 
-	topSizer->Add(item0, 0, wxALL | wxGROW, 5);
+	topSizer->Add(item0, 0, wxGROW, 5);
 	panel->SetSizerAndFit(topSizer);
 
 	return panel;
@@ -426,141 +442,170 @@ wxPanel* OptionsFrame::CreateStepsSettingsPage(wxBookCtrlBase* parent)
 {
 	wxPanel* panel = new wxPanel(parent, wxID_ANY | wxGROW);
 
-
 	wxBoxSizer* topSizer = new wxBoxSizer(wxVERTICAL);
+	topSizer->AddSpacer(5);
 	wxBoxSizer* item0 = new wxBoxSizer(wxVERTICAL);
+	wxBoxSizer* item1 = new wxBoxSizer(wxHORIZONTAL);
+	item1->AddSpacer(5);
 
+	item0->Add(item1, 0, wxGROW, 5);
+
+	
 	// ***********************************************************************************
 
 	wxStaticBoxSizer* itemBoxSizer = new wxStaticBoxSizer(wxHORIZONTAL, panel, "Gradient Descent Steps");
-
 	// add controls
-
 	wxStaticText* label = new wxStaticText(panel, wxID_STATIC, "First stage:", wxDefaultPosition, wxSize(80, -1), wxALIGN_RIGHT);
-	itemBoxSizer->Add(label, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	itemBoxSizer->Add(label, 0, wxALIGN_CENTER_VERTICAL , 5);
 
 	wxString str = wxString::Format(wxT("%d"), options.firstStageGradientDescentSteps);
 	wxTextCtrl* firstStageGradStepsCtrl = new wxTextCtrl(panel, GRADIENT_DESCENT_FIRST_STAGE_STEPS_ID, str, wxDefaultPosition, wxSize(60, -1), 0);
-	itemBoxSizer->Add(firstStageGradStepsCtrl, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL | wxGROW, 5);
+	itemBoxSizer->Add(firstStageGradStepsCtrl, 0, wxGROW, 5);
 
 
 	label = new wxStaticText(panel, wxID_STATIC, "Second stage:", wxDefaultPosition, wxSize(80, -1), wxALIGN_RIGHT);
-	itemBoxSizer->Add(label, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	itemBoxSizer->Add(label, 0, wxALIGN_CENTER_VERTICAL , 5);
 
 	str = wxString::Format(wxT("%d"), options.secondStageGradientDescentSteps);
 	wxTextCtrl* secondStageGradStepsCtrl = new wxTextCtrl(panel, GRADIENT_DESCENT_SECOND_STAGE_STEPS_ID, str, wxDefaultPosition, wxSize(60, -1), 0);
-	itemBoxSizer->Add(secondStageGradStepsCtrl, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL | wxGROW, 5);
+	itemBoxSizer->Add(secondStageGradStepsCtrl, 0, wxGROW, 5);
 
 
 	label = new wxStaticText(panel, wxID_STATIC, "Third stage:", wxDefaultPosition, wxSize(80, -1), wxALIGN_RIGHT);
-	itemBoxSizer->Add(label, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	itemBoxSizer->Add(label, 0, wxALIGN_CENTER_VERTICAL , 5);
 
 	str = wxString::Format(wxT("%d"), options.thirdStageGradientDescentSteps);
 	wxTextCtrl* thirdStageGradStepsCtrl = new wxTextCtrl(panel, GRADIENT_DESCENT_THIRD_STAGE_STEPS_ID, str, wxDefaultPosition, wxSize(60, -1), 0);
-	itemBoxSizer->Add(thirdStageGradStepsCtrl, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL | wxGROW, 5);
+	itemBoxSizer->Add(thirdStageGradStepsCtrl, 0, wxGROW, 5);
 
-
-	item0->Add(itemBoxSizer, 0, wxALL | wxGROW, 0);
+	item0->AddSpacer(5);
+	item1->Add(itemBoxSizer, 0, wxGROW, 5);
+	item1->AddSpacer(5);
 
 	// and so on...
+	item1 = new wxBoxSizer(wxHORIZONTAL);
+	item1->AddSpacer(5);
+
+	item0->Add(item1, 0, wxGROW, 5);
 
 	wxBoxSizer* itemSizer = new wxBoxSizer(wxHORIZONTAL);
 	label = new wxStaticText(panel, wxID_STATIC, "First equilibration steps:", wxDefaultPosition, wxSize(150, -1), wxALIGN_RIGHT);
-	itemSizer->Add(label, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	itemSizer->Add(label, 0, wxALIGN_CENTER_VERTICAL , 5);
 
 	str = wxString::Format(wxT("%d"), options.firstThermalSteps);
 	wxTextCtrl* firstThermalCtrl = new wxTextCtrl(panel, FIRST_THERMAL_STEPS_ID, str, wxDefaultPosition, wxSize(100, -1), 0);
-	itemSizer->Add(firstThermalCtrl, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL | wxGROW, 5);
+	itemSizer->Add(firstThermalCtrl, 0, wxGROW, 5);
 
-	item0->Add(itemSizer, 0, wxALL | wxGROW, 0);
+	item0->AddSpacer(5);
+	item1->Add(itemSizer, 0, wxGROW, 5);
+	item1->AddSpacer(5);
 
 
+	item1 = new wxBoxSizer(wxHORIZONTAL);
+	item1->AddSpacer(5);
 
+	item0->Add(item1, 0, wxGROW, 5);
 	itemBoxSizer = new wxStaticBoxSizer(wxHORIZONTAL, panel, "First stage");
 
 	label = new wxStaticText(panel, wxID_STATIC, "Equilibration steps:", wxDefaultPosition, wxSize(100, -1), wxALIGN_RIGHT);
-	itemBoxSizer->Add(label, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	itemBoxSizer->Add(label, 0, wxALIGN_CENTER_VERTICAL , 5);
 
 	str = wxString::Format(wxT("%d"), options.firstStageThermalSteps);
 	wxTextCtrl* firstStageThermalStepsCtrl = new wxTextCtrl(panel, FIRST_STAGE_THERMAL_STEPS_ID, str, wxDefaultPosition, wxSize(60, -1), 0);
-	itemBoxSizer->Add(firstStageThermalStepsCtrl, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL | wxGROW, 5);
+	itemBoxSizer->Add(firstStageThermalStepsCtrl, 0, wxGROW, 5);
 
 	label = new wxStaticText(panel, wxID_STATIC, "Statistics steps:", wxDefaultPosition, wxSize(100, -1), wxALIGN_RIGHT);
-	itemBoxSizer->Add(label, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	itemBoxSizer->Add(label, 0, wxALIGN_CENTER_VERTICAL , 5);
 
 	str = wxString::Format(wxT("%d"), options.firstStageStatsSteps);
 	wxTextCtrl* firstStageStatsStepsCtrl = new wxTextCtrl(panel, FIRST_STAGE_STATS_STEPS_ID, str, wxDefaultPosition, wxSize(60, -1), 0);
-	itemBoxSizer->Add(firstStageStatsStepsCtrl, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL | wxGROW, 5);
+	itemBoxSizer->Add(firstStageStatsStepsCtrl, 0, wxGROW, 5);
 
-	item0->Add(itemBoxSizer, 0, wxALL | wxGROW, 0);
+	item0->AddSpacer(5);
+	item1->Add(itemBoxSizer, 0, wxGROW, 5);
+	item1->AddSpacer(5);
 
+	item1 = new wxBoxSizer(wxHORIZONTAL);
+	item1->AddSpacer(5);
 
+	item0->Add(item1, 0, wxGROW, 5);
 	itemBoxSizer = new wxStaticBoxSizer(wxHORIZONTAL, panel, "Second stage");
 
-
 	label = new wxStaticText(panel, wxID_STATIC, "Equilibration steps:", wxDefaultPosition, wxSize(100, -1), wxALIGN_RIGHT);
-	itemBoxSizer->Add(label, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	itemBoxSizer->Add(label, 0, wxALIGN_CENTER_VERTICAL , 5);
 
 	str = wxString::Format(wxT("%d"), options.secondStageThermalSteps);
 	wxTextCtrl* secondStageThermalStepsCtrl = new wxTextCtrl(panel, SECOND_STAGE_THERMAL_STEPS_ID, str, wxDefaultPosition, wxSize(60, -1), 0);
-	itemBoxSizer->Add(secondStageThermalStepsCtrl, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL | wxGROW, 5);
+	itemBoxSizer->Add(secondStageThermalStepsCtrl, 0, wxGROW, 5);
 
 
 	label = new wxStaticText(panel, wxID_STATIC, "Statistics steps:", wxDefaultPosition, wxSize(100, -1), wxALIGN_RIGHT);
-	itemBoxSizer->Add(label, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	itemBoxSizer->Add(label, 0, wxALIGN_CENTER_VERTICAL , 5);
 
 	str = wxString::Format(wxT("%d"), options.secondStageStatsSteps);
 	wxTextCtrl* secondStageStatsStepsCtrl = new wxTextCtrl(panel, SECOND_STAGE_STATS_STEPS_ID, str, wxDefaultPosition, wxSize(60, -1), 0);
-	itemBoxSizer->Add(secondStageStatsStepsCtrl, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL | wxGROW, 5);
+	itemBoxSizer->Add(secondStageStatsStepsCtrl, 0, wxGROW, 5);
 
+	item0->AddSpacer(5);
+	item1->Add(itemBoxSizer, 0, wxGROW, 5);
+	item1->AddSpacer(5);
 
-	item0->Add(itemBoxSizer, 0, wxALL | wxGROW, 0);
+	item1 = new wxBoxSizer(wxHORIZONTAL);
+	item1->AddSpacer(5);
 
-
+	item0->Add(item1, 0, wxGROW, 5);
 	itemBoxSizer = new wxStaticBoxSizer(wxHORIZONTAL, panel, "Third stage");
 
 	label = new wxStaticText(panel, wxID_STATIC, "Equilibration steps:", wxDefaultPosition, wxSize(100, -1), wxALIGN_RIGHT);
-	itemBoxSizer->Add(label, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	itemBoxSizer->Add(label, 0, wxALIGN_CENTER_VERTICAL , 5);
 
 	str = wxString::Format(wxT("%d"), options.thirdStageThermalSteps);
 	wxTextCtrl* thirdStageThermalStepsCtrl = new wxTextCtrl(panel, THIRD_STAGE_THERMAL_STEPS_ID, str, wxDefaultPosition, wxSize(60, -1), 0);
-	itemBoxSizer->Add(thirdStageThermalStepsCtrl, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL | wxGROW, 5);
+	itemBoxSizer->Add(thirdStageThermalStepsCtrl, 0, wxGROW, 5);
 
 	label = new wxStaticText(panel, wxID_STATIC, "Statistics steps:", wxDefaultPosition, wxSize(100, -1), wxALIGN_RIGHT);
-	itemBoxSizer->Add(label, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	itemBoxSizer->Add(label, 0, wxALIGN_CENTER_VERTICAL , 5);
 
 	str = wxString::Format(wxT("%d"), options.thirdStageStatsSteps);
 	wxTextCtrl* thirdStageStatsStepsCtrl = new wxTextCtrl(panel, THIRD_STAGE_STATS_STEPS_ID, str, wxDefaultPosition, wxSize(60, -1), 0);
-	itemBoxSizer->Add(thirdStageStatsStepsCtrl, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL | wxGROW, 5);
+	itemBoxSizer->Add(thirdStageStatsStepsCtrl, 0, wxGROW, 5);
 
-	item0->Add(itemBoxSizer, 0, wxALL | wxGROW, 0);
+	item0->AddSpacer(5);
+	item1->Add(itemBoxSizer, 0, wxGROW, 5);
+	item1->AddSpacer(5);
 
+	item1 = new wxBoxSizer(wxHORIZONTAL);
+	item1->AddSpacer(5);
 
+	item0->Add(item1, 0, wxGROW, 5);
 	itemBoxSizer = new wxStaticBoxSizer(wxHORIZONTAL, panel, "Last step");
 
 	label = new wxStaticText(panel, wxID_STATIC, "Equilibration steps:", wxDefaultPosition, wxSize(100, -1), wxALIGN_RIGHT);
-	itemBoxSizer->Add(label, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	itemBoxSizer->Add(label, 0, wxALIGN_CENTER_VERTICAL , 5);
 
 	str = wxString::Format(wxT("%d"), options.lastStepThermalSteps);
 	wxTextCtrl* lastStepThermalStepsCtrl = new wxTextCtrl(panel, LAST_STEP_THERMAL_STEPS_ID, str, wxDefaultPosition, wxSize(60, -1), 0);
-	itemBoxSizer->Add(lastStepThermalStepsCtrl, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL | wxGROW, 5);
+	itemBoxSizer->Add(lastStepThermalStepsCtrl, 0, wxGROW, 5);
 
 	label = new wxStaticText(panel, wxID_STATIC, "Statistics steps:", wxDefaultPosition, wxSize(100, -1), wxALIGN_RIGHT);
-	itemBoxSizer->Add(label, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	itemBoxSizer->Add(label, 0, wxALIGN_CENTER_VERTICAL , 5);
 
 	str = wxString::Format(wxT("%d"), options.lastStepStatsSteps);
 	wxTextCtrl* lastStepStatsStepsCtrl = new wxTextCtrl(panel, LAST_STEP_STATS_STEPS_ID, str, wxDefaultPosition, wxSize(60, -1), 0);
-	itemBoxSizer->Add(lastStepStatsStepsCtrl, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL | wxGROW, 5);
+	itemBoxSizer->Add(lastStepStatsStepsCtrl, 0, wxGROW, 5);
 
-	item0->Add(itemBoxSizer, 0, wxALL | wxGROW, 0);
-
+	item0->AddSpacer(5);
+	item1->Add(itemBoxSizer, 0, wxGROW, 5);
+	item1->AddSpacer(5);
 
 	itemSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	label = new wxStaticText(panel, wxID_STATIC, "Equilibration and statistics steps get multiplied by the number of electrons", wxDefaultPosition, wxSize(450, -1), wxALIGN_RIGHT);
-	itemSizer->Add(label, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL | wxGROW, 5);
+	itemSizer->Add(label, 0, wxGROW, 5);
 
-	item0->Add(itemSizer, 0, wxALL | wxGROW, 0);
+	item0->AddSpacer(5);
+	item0->Add(itemSizer, 0, wxGROW, 5);
+	item0->AddSpacer(5);
 
 	// *************************
 	// Validators
@@ -619,7 +664,7 @@ wxPanel* OptionsFrame::CreateStepsSettingsPage(wxBookCtrlBase* parent)
 
 	// **************************
 
-	topSizer->Add(item0, 0, wxALL | wxGROW, 5);
+	topSizer->Add(item0, 0, wxGROW, 5);
 	panel->SetSizerAndFit(topSizer);
 
 
