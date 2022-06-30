@@ -166,7 +166,7 @@ void VQMCMoleculeFrame::OnTimer(wxTimerEvent& WXUNUSED(event))
 		std::lock_guard<std::mutex> lock(bufferStrMutex);
 		if (!bufferStr.empty())
 		{
-			richTextCtrl->WriteText(wxString(bufferStr));
+			richTextCtrl->AppendText(wxString(bufferStr));
 			bufferStr.clear();
 		}
 	}
