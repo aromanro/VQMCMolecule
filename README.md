@@ -1,6 +1,7 @@
 # VQMCMolecule
 Variational Quantum Monte Carlo for a molecule, using Fokker-Planck/Langevin approach
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/58a3c0672ec54e8bacf822f85962ba15)](https://app.codacy.com/gh/aromanro/VQMCMolecule?utm_source=github.com&utm_medium=referral&utm_content=aromanro/VQMCMolecule&utm_campaign=Badge_Grade_Settings)
 [![CodeFactor](https://www.codefactor.io/repository/github/aromanro/vqmcmolecule/badge)](https://www.codefactor.io/repository/github/aromanro/vqmcmolecule)
 
 It requires quite a lot of computation power, by default now it will start for 20 threads setting, so be sure if you try it out to have enough computing power.
