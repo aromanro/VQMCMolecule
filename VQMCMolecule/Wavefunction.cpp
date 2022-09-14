@@ -71,9 +71,9 @@ void Wavefunction::Init(const Systems::Molecule& molecule, Random& random, doubl
 		const unsigned int index2 = std::get<1>(std::get<0>(overlapsVector[i]));
 
 		if (firstPass)
-			orbitals.push_back(Orbitals::VQMCOrbital(firstAtomOrbsToMerge[index1], secondAtomOrbsToMerge[index2], Overlap, Overlap > 0 ? false : true));
+			orbitals.push_back(Orbitals::VQMCOrbital(firstAtomOrbsToMerge[index1], secondAtomOrbsToMerge[index2], Overlap, Overlap <= 0));
 		else
-			orbitals.push_back(Orbitals::VQMCOrbital(firstAtomOrbsToMerge[index1], secondAtomOrbsToMerge[index2], Overlap, Overlap > 0 ? true : false));
+			orbitals.push_back(Orbitals::VQMCOrbital(firstAtomOrbsToMerge[index1], secondAtomOrbsToMerge[index2], Overlap, Overlap > 0));
 
 		if (firstPass && i == molecule.alphaElectrons - 1)
 		{
@@ -97,9 +97,9 @@ void Wavefunction::Init(const Systems::Molecule& molecule, Random& random, doubl
 		const unsigned int index2 = std::get<1>(std::get<0>(overlapsVector[i]));
 
 		if (firstPass)
-			orbitals.push_back(Orbitals::VQMCOrbital(firstAtomOrbsToMerge[index1], secondAtomOrbsToMerge[index2], Overlap, Overlap > 0 ? false : true));
+			orbitals.push_back(Orbitals::VQMCOrbital(firstAtomOrbsToMerge[index1], secondAtomOrbsToMerge[index2], Overlap, Overlap <= 0));
 		else
-			orbitals.push_back(Orbitals::VQMCOrbital(firstAtomOrbsToMerge[index1], secondAtomOrbsToMerge[index2], Overlap, Overlap > 0 ? true : false));
+			orbitals.push_back(Orbitals::VQMCOrbital(firstAtomOrbsToMerge[index1], secondAtomOrbsToMerge[index2], Overlap, Overlap > 0));
 
 		if (firstPass && i == totalElectrons - 1)
 		{
