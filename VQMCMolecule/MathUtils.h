@@ -21,8 +21,7 @@ private:
 public:
 	static double Factorial(long int n)
 	{
-		// using precalculated (at compile time) values
-		if (n < 0) return 1;
+		if (n <= 1) return 1;
 		else if (n < 21) return static_cast<double>(factorialsTable[n]);
 
 		double val = static_cast<double>(factorialsTable[20]);
@@ -34,7 +33,7 @@ public:
 
 	static double DoubleFactorial(long int n)
 	{
-		if (n < 0) return 1;
+		if (n <= 1) return 1;
 		else if (n < 21) return static_cast<double>(doubleFactorialsTable[n]);
 
 		double res = 1;
