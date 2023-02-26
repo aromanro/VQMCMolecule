@@ -25,6 +25,7 @@ std::tuple<double, double, double> VQMC::SamplingFokkerPlanck(int thermalSteps, 
 
     double logDerivBeta = 0;
     double logDerivBetaE = 0;
+    double o2dt = 1. / (2. * dt);
 
     //long long int accepted = 0;
 
@@ -58,7 +59,7 @@ std::tuple<double, double, double> VQMC::SamplingFokkerPlanck(int thermalSteps, 
             const double JastrowRatio = wavefunction.JastrowRatio(newPos, p, beta);
             const double WavefunctionRatio = JastrowRatio * SlaterRatio;
             
-            const double ratio = WavefunctionRatio * WavefunctionRatio * exp((RoldRnew * RoldRnew - RnewRold * RnewRold) / (2. * dt));
+            const double ratio = WavefunctionRatio * WavefunctionRatio * exp((RoldRnew * RoldRnew - RnewRold * RnewRold) * o2dt);
             if (ratio >= 1 || random.getZeroOne() <= ratio)
             {
                 // accept move
@@ -87,11 +88,12 @@ std::tuple<double, double, double> VQMC::SamplingFokkerPlanck(int thermalSteps, 
     //std::cout << "Acceptance ratio: " << static_cast<double>(accepted) / (totalCycles * static_cast<double>(Ne)) << std::endl;
 
     const double dv = Ne * static_cast<double>(cycles);
+    const double odv = 1. / dv;
 
-    E /= dv;
-    E2 /= dv;
-    logDerivBeta /= dv;
-    logDerivBetaE /= dv;
+    E *= odv;
+    E2 *= odv;
+    logDerivBeta *= odv;
+    logDerivBetaE *= odv;
 
     return std::make_tuple(E, E2, 2. * (logDerivBetaE - E * logDerivBeta));
 }
