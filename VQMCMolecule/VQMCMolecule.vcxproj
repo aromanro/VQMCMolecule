@@ -155,6 +155,7 @@
       <PreprocessorDefinitions>WIN32;__WXMSW__;_WINDOWS;wxUSE_GUI=1;NOPCH;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
