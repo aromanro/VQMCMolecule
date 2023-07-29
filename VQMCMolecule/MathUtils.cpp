@@ -2,15 +2,15 @@
 
 template <unsigned long long int n> constexpr unsigned long long int factorial()
 {
-	if constexpr (n > 0)
+	if constexpr (n > 1)
 		return n * factorial<n - 1>();
 
 	return 1;
 }
 
-template <long long int n> constexpr unsigned long long int double_factorial()
+template <unsigned long long int n> constexpr unsigned long long int double_factorial()
 {
-	if constexpr (n > 0)
+	if constexpr (n > 1)
 		return static_cast<unsigned long long int>(n) * double_factorial<n - 2>();
 
 	return 1;
