@@ -15,15 +15,16 @@ namespace Orbitals {
 	class Shell
 	{
 	public:
-		unsigned int ID;
-		unsigned int centerID;
+		unsigned int ID = 0;
+		unsigned int centerID = 0;
 
-		Shell() : ID(0), centerID(0) {}
+		virtual ~Shell() = default;
 
 		virtual Vector3D<double> getCenter() const = 0;
 		virtual double operator()(const Vector3D<double>& r) const = 0;
 		virtual Vector3D<double> getGradient(const Vector3D<double>& r) const = 0;
 		virtual double getLaplacian(const Vector3D<double>& r) const = 0;
+		virtual void Normalize() = 0;
 	};
 
 	// the basis functions inside have the same center and exponent
@@ -33,18 +34,15 @@ namespace Orbitals {
 	public:
 		std::vector<GaussianOrbital> basisFunctions;
 		
-		virtual Vector3D<double> getCenter() const;
+		Vector3D<double> getCenter() const override;
 
 		double getAlpha() const;
-
-		PrimitiveGaussianShell();
-		~PrimitiveGaussianShell();
 
 		double operator()(const Vector3D<double>& r) const override;
 		Vector3D<double> getGradient(const Vector3D<double>& r) const override;
 		double getLaplacian(const Vector3D<double>& r) const override;
 
-		void Normalize();
+		void Normalize() override;
 	};
 
 	// all contracted gaussian orbitals that are contained share the same center and the same set of exponents
@@ -55,13 +53,10 @@ namespace Orbitals {
 		std::vector<ContractedGaussianOrbital> basisFunctions;
 
 		
-		ContractedGaussianShell();
-		~ContractedGaussianShell();
-		
 		void AddOrbitals(char type);
 		void AddGaussians(double exponent);
 
-		virtual Vector3D<double> getCenter() const;
+		Vector3D<double> getCenter() const override;
 		std::string GetShellString() const;
 
 
@@ -75,12 +70,12 @@ namespace Orbitals {
 		double operator()(const Vector3D<double>& r) const override;
 		Vector3D<double> getGradient(const Vector3D<double>& r) const override;
 		double getLaplacian(const Vector3D<double>& r) const override;
+		
+		void SetCenters(const Vector3D<double>& center);
+		void Normalize() override;
 
-	protected:
+	private:
 		static unsigned int AdjustOrbitalsCount(char orbital, unsigned int res);
 		void AddOrbitalsInCanonicalOrder(unsigned int L);
-	public:
-		void SetCenters(const Vector3D<double>& center);
-		void Normalize();
 	};
 }

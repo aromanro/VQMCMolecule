@@ -24,7 +24,7 @@ public:
 
 	Systems::Molecule molecule;
 
-protected:
+private:
 	double dt;
 	double sdt;
 

@@ -13,11 +13,8 @@ namespace Systems {
 	public:
 		std::vector<AtomWithShells> atoms;
 
-		unsigned int alphaElectrons;
-		unsigned int betaElectrons;
-
-
-		Molecule();
+		unsigned int alphaElectrons = 0;
+		unsigned int betaElectrons = 0;
 
 		unsigned int CountNumberOfContractedGaussians() const;
 		unsigned int CountNumberOfGaussians() const;

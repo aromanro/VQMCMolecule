@@ -25,8 +25,7 @@ Options::Options()
 	lastStepStatsSteps(64000),
 	gradDescParam(0.3),
 	beta(1.),
-	cyclesRefresh(10000),
-	m_fileconfig(nullptr)
+	cyclesRefresh(10000)
 {
 }
 

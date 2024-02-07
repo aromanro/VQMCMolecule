@@ -25,7 +25,7 @@ namespace Orbitals
 
 	Vector3D<double> VQMCOrbital::getGradient(const Vector3D<double>& r) const
 	{
-		Vector3D<double> val = m_orb1.getGradient(r);
+		Vector3D val(m_orb1.getGradient(r));
 
 		if (!single)
 		{

@@ -109,12 +109,6 @@ VQMCMoleculeFrame::VQMCMoleculeFrame(const wxString& title, const wxPoint& pos, 
 	Layout();
 }
 
-
-VQMCMoleculeFrame::~VQMCMoleculeFrame()
-{
-}
-
-
 void VQMCMoleculeFrame::OnOptions(wxCommandEvent& WXUNUSED(event))
 {
 	VQMCMoleculeApp& app = wxGetApp();

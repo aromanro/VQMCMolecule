@@ -28,7 +28,7 @@ namespace Orbitals
 		Vector3D<double> getGradient(const Vector3D<double>& r) const override;
 		double getLaplacian(const Vector3D<double>& r) const override;
 
-	protected:
+	private:
 		ContractedGaussianOrbital m_orb1;
 		ContractedGaussianOrbital m_orb2;
 		bool single;

@@ -141,6 +141,6 @@ protected:
 	void Open();
 	void Close();
 
-	wxFileConfig* m_fileconfig;
+	wxFileConfig* m_fileconfig = nullptr;
 };
 

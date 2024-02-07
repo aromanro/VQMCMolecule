@@ -12,8 +12,6 @@
 class Wavefunction
 {
 public:
-	Wavefunction() : m_molecule(nullptr) {}
-
 	void Init(const Systems::Molecule& molecule, Random& random, double radiusInit = 2);
 
 	void ComputeSlaterInv();
@@ -58,6 +56,6 @@ protected:
 	Eigen::MatrixXd SpinUpInvSlater;
 	Eigen::MatrixXd SpinDownInvSlater;
 
-	const Systems::Molecule* m_molecule;
+	const Systems::Molecule* m_molecule = nullptr;
 };
 

@@ -10,8 +10,7 @@ namespace Orbitals {
 		class QuantumNumbers
 		{
 		public:
-			unsigned int l, m, n;
-
+			QuantumNumbers() = default;
 			QuantumNumbers(unsigned int L, unsigned int M, unsigned int N);
 
 			char AtomicOrbital() const;
@@ -100,6 +99,10 @@ namespace Orbitals {
 				
 				return temp;
 			}
+
+			unsigned int l = 0;
+			unsigned int m = 0;
+			unsigned int n = 0;
 		};
 
 		inline bool operator<(const QuantumNumbers& lhs, const QuantumNumbers& rhs) { return lhs.AngularMomentum() < rhs.AngularMomentum(); }

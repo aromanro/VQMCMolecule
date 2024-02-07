@@ -26,7 +26,6 @@ class VQMCMoleculeFrame : public wxFrame
 {
 public:
 	VQMCMoleculeFrame(const wxString& title, const wxPoint& pos, const wxSize& size);
-	~VQMCMoleculeFrame();
 
 private:
 	std::atomic_bool inExecution;

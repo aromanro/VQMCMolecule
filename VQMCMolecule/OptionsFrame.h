@@ -53,7 +53,7 @@ public:
 	int sel1;
 	int sel2;
 	
-protected:
+private:
 	wxPanel* CreateMoleculeSettingsPage(wxBookCtrlBase* parent);
 	wxPanel* CreateComputationSettingsPage(wxBookCtrlBase* parent);
 	wxPanel* CreateStepsSettingsPage(wxBookCtrlBase* parent);

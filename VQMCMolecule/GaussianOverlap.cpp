@@ -5,13 +5,8 @@
 
 namespace GaussianIntegrals {
 
-	GaussianOverlap::GaussianOverlap()
-		: factor(0)
-	{
-	}
 
 	GaussianOverlap::GaussianOverlap(double alpha1, double alpha2, const Vector3D<double>& center1, const Vector3D<double>& center2, const Orbitals::QuantumNumbers::QuantumNumbers& maxQN1, const Orbitals::QuantumNumbers::QuantumNumbers& maxQN2)
-		: factor(0)
 	{
 		Reset(alpha1, alpha2, center1, center2, maxQN1, maxQN2);
 	}
@@ -27,7 +22,7 @@ namespace GaussianIntegrals {
 		CalculateOverlap(matrixY, alpha1, alpha2, center1.Y, center2.Y, maxQN1.m, maxQN2.m);
 		CalculateOverlap(matrixZ, alpha1, alpha2, center1.Z, center2.Z, maxQN1.n, maxQN2.n);
 
-		const Vector3D<double> dif = center1 - center2;
+		const Vector3D dif(center1 - center2);
 		factor = exp(-alpha1 * alpha2 / (alpha1 + alpha2) * dif * dif) * pow(M_PI / (alpha1 + alpha2), 3. / 2.);
 	}
 

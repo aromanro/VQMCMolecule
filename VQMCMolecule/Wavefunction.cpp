@@ -23,7 +23,6 @@ void Wavefunction::Init(const Systems::Molecule& molecule, Random& random, doubl
 
 	// but for now I'll let only the diatomic case, it will be the only one exposed from the UI
 
-
 	orbitals.clear();
 
 	m_molecule = &molecule;
@@ -33,7 +32,6 @@ void Wavefunction::Init(const Systems::Molecule& molecule, Random& random, doubl
 
 	const unsigned int Ne = molecule.alphaElectrons + molecule.betaElectrons;
 	currentParticles.resize(Ne);
-
 
 	const bool isSpecialMolecule = molecule.atoms.size() == 2;
 
@@ -54,7 +52,6 @@ void Wavefunction::Init(const Systems::Molecule& molecule, Random& random, doubl
 	std::vector<std::tuple<std::tuple<unsigned int, unsigned int>, double>> overlapsVector;
 
 	PickValenceOrbitalsToCombine(firstAtomOrbsToMerge, secondAtomOrbsToMerge, overlapsVector);
-
 
 	// distribute the electrons randomly and add the orbitals for the 'core' electrons
 
@@ -292,11 +289,9 @@ Vector3D<double> Wavefunction::HalfQuantumForce(const Vector3D<double>& newPos, 
 		{
 			const bool OtherSpinUp = IsSpinUp(i);
 
-			const Vector3D<double> difVec = newPos - currentParticles[i];
+			const Vector3D difVec(newPos - currentParticles[i]);
 			const double difLength = difVec.Length();
-
 			const double onepbetar = 1. + beta * difLength;
-
 			const double fact = Alpha(MovedSpinUp, OtherSpinUp) / (onepbetar * onepbetar * difLength); // see 16.34
 
 			logGradientJastrow += fact * difVec;
@@ -345,7 +340,7 @@ double Wavefunction::LocalKineticEnergy(double beta) const
 	for (unsigned int p = 0; p < Ne; ++p)
 	{
 		const bool PartSpinUp = IsSpinUp(p);
-		const Vector3D<double> partPos = currentParticles[p];
+		const Vector3D partPos(currentParticles[p]);
 
 		// Jastrow 
 		// see 16.31 and 16.34 for gradient
@@ -357,7 +352,7 @@ double Wavefunction::LocalKineticEnergy(double beta) const
 			{
 				const bool OtherSpinUp = IsSpinUp(i);
 
-				const Vector3D<double> difVec = partPos - currentParticles[i];
+				const Vector3D difVec(partPos - currentParticles[i]);
 				const double difLength = difVec.Length();
 
 				const double onepbetar = 1. + beta * difLength;
@@ -410,7 +405,7 @@ double Wavefunction::LocalEnergy(double beta) const
 	double potential = 0;
 
 	// contribution from electron-nuclei potential
-	for (const Vector3D<double>& v : currentParticles)
+	for (const auto& v : currentParticles)
 		for (const Systems::AtomWithShells& atom : m_molecule->atoms)
 			potential -= static_cast<double>(atom.Z) / (v - atom.position).Length();
 
@@ -514,12 +509,9 @@ double Wavefunction::getOverlap(const Systems::AtomWithShells& atom1, const Orbi
 	auto it = overlapIntegralsMap.find(params);
 	if (overlapIntegralsMap.end() != it) return it->second.getOverlap(gaussian1.angularMomentum, gaussian2.angularMomentum);
 
-
 	// unfortunately it's not yet calculated
 	GaussianIntegrals::GaussianOverlap overlap;
 	auto result = overlapIntegralsMap.insert(std::make_pair(params, overlap));
-
-
 
 	Orbitals::QuantumNumbers::QuantumNumbers maxQN1(0, 0, 0), maxQN2(0, 0, 0);
 

@@ -74,9 +74,8 @@ public:
 		return Vector3D<double>(x, y, z);
 	}
 
+private:
 	std::mt19937_64 rng;
-
-protected:
 	std::uniform_real_distribution<double> uniformZeroOne;	
 	std::normal_distribution<double> normalDistribution;
 };

@@ -10,8 +10,7 @@ namespace Orbitals {
 	class OrbitalBase
 	{
 	public:
-		OrbitalBase() {}
-		virtual ~OrbitalBase() {}
+		virtual ~OrbitalBase() = default;
 
 		virtual double operator()(const Vector3D<double>& r) const = 0;
 
@@ -22,18 +21,14 @@ namespace Orbitals {
 	class Orbital : public OrbitalBase
 	{
 	public:
-		Vector3D<double> center;
-		QuantumNumbers::QuantumNumbers angularMomentum;
-		
-		unsigned int ID;
-		unsigned int centerID;
-		unsigned int shellID;
-
-		Orbital();
-		virtual ~Orbital();
-		
 		virtual Vector3D<double> getCenter() const;
 		char AtomicOrbital() const { return angularMomentum.AtomicOrbital(); }
+
+		Vector3D<double> center;
+		QuantumNumbers::QuantumNumbers angularMomentum;
+		unsigned int ID = 0;
+		unsigned int centerID = 0;
+		unsigned int shellID = 0;
 	};
 
 }

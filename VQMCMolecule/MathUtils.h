@@ -14,11 +14,12 @@
 
 class MathUtils
 {
-private:
-	static std::array<unsigned long long int, 21> factorialsTable;
-	static std::array<unsigned long long int, 21> doubleFactorialsTable;
-
 public:
+	class FunctionFunctor {
+	public:
+		virtual double operator()(double x) const = 0;
+	};
+
 	static double Factorial(long int n)
 	{
 		if (n <= 1) return 1;
@@ -79,10 +80,7 @@ private:
 		return 16. / (3 * (1. + n)) * sinVal * sinVal * sinVal * sinVal;
 	}
 
-public:
-	class FunctionFunctor {
-	public:
-		virtual double operator()(double x) const = 0;
-	};
+	static std::array<unsigned long long int, 21> factorialsTable;
+	static std::array<unsigned long long int, 21> doubleFactorialsTable;
 };
 

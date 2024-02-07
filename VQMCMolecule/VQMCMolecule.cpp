@@ -64,10 +64,7 @@ void VQMCMolecule::Compute(const Options& opt, const Chemistry::Basis& basisSTOX
                     // loop over walkers
                     for (int w = startPos; w < nextPos; ++w)
                     {
-                        double Ep;
-                        double E2p;
-                        double dEdBp;
-                        std::tie(Ep, E2p, dEdBp) = vqmcWalkers[w].SamplingFokkerPlanck(thermalSteps, cycleSteps, beta, cyclesRefresh);
+                        auto [Ep, E2p, dEdBp] = vqmcWalkers[w].SamplingFokkerPlanck(thermalSteps, cycleSteps, beta, cyclesRefresh);
                         E += Ep;
                         E2 += E2p;
                         dEdB += dEdBp;
@@ -158,10 +155,10 @@ void VQMCMolecule::InitMolecule(const Options& opt, const Chemistry::Basis& basi
 void VQMCMolecule::InitWalkers(std::vector<VQMC>& vqmcWalkers, Systems::Molecule& molecule, double deltat)
 {
     Random initialSeed;
-    for (unsigned int i = 0; i < vqmcWalkers.size(); ++i)
+    for (auto& walker : vqmcWalkers)
     {
-        vqmcWalkers[i].SetDeltat(deltat);
-        vqmcWalkers[i].Init(molecule, static_cast<int>(initialSeed.getZeroOne() * 1E5));
+        walker.SetDeltat(deltat);
+        walker.Init(molecule, static_cast<int>(initialSeed.getZeroOne() * 1E5));
     }
 }
 
@@ -172,10 +169,7 @@ double VQMCMolecule::GetValuesFromThreads(std::vector<std::future<std::tuple<dou
     double dEdB = 0;
     for (auto& task : tasks)
     {
-        double Ep;
-        double E2p;
-        double dEdBp;
-        std::tie(Ep, E2p, dEdBp) = task.get();
+        auto [Ep, E2p, dEdBp] = task.get();
         E += Ep;
         E2 += E2p;
         dEdB += dEdBp;

@@ -11,16 +11,6 @@
 
 namespace Orbitals {
 
-	GaussianOrbital::GaussianOrbital()
-		: coefficient(1), alpha(1), normalizationFactor(1), coeffProdNorm(0)
-	{
-	}
-
-
-	GaussianOrbital::~GaussianOrbital()
-	{
-	}
-
 
 	double GaussianOrbital::getCoefficient() const
 	{
