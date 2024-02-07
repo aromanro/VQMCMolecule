@@ -76,7 +76,7 @@ private:
 
 
 VQMCMoleculeFrame::VQMCMoleculeFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
-	: wxFrame(NULL, wxID_ANY, title, pos, size), inExecution(false), timer(this, ID_TIMER)
+	: wxFrame(nullptr, wxID_ANY, title, pos, size), inExecution(false), timer(this, ID_TIMER)
 {
 	wxMenu* menuFile = new wxMenu;
 
