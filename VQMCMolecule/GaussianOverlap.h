@@ -27,7 +27,8 @@ namespace GaussianIntegrals {
 
 		double operator()(const Orbitals::QuantumNumbers::QuantumNumbers& QN1, const Orbitals::QuantumNumbers::QuantumNumbers& QN2) const { return getOverlap(QN1, QN2); }
 		double getOverlap(const Orbitals::QuantumNumbers::QuantumNumbers& QN1, const Orbitals::QuantumNumbers::QuantumNumbers& QN2) const;
-	protected:
+
+	private:
 		void CalculateOverlap(Eigen::MatrixXd& matrix, double alpha1, double alpha2, double center1, double center2, unsigned int maxQN1, unsigned int maxQN2);
 	};
 }
