@@ -170,6 +170,7 @@ void VQMCMoleculeFrame::OnTimer(wxTimerEvent& WXUNUSED(event))
 void VQMCMoleculeFrame::OnExecute(wxCommandEvent& WXUNUSED(event))
 {
 	if (inExecution.exchange(true)) return;
+	else if (computationThread.joinable()) computationThread.join();
 
 	wxBeginBusyCursor();
 	richTextCtrl->Clear();
@@ -177,7 +178,7 @@ void VQMCMoleculeFrame::OnExecute(wxCommandEvent& WXUNUSED(event))
 	VQMCMoleculeApp& app = wxGetApp();
 	Options options = app.options;
 
-	std::thread([this, options]()
+	computationThread = std::thread([this, options]()
 		{
 			MyStream myStream(bufferStr, bufferStrMutex);
 			RedirectStream redirect(std::cout, myStream);
@@ -199,7 +200,7 @@ void VQMCMoleculeFrame::OnExecute(wxCommandEvent& WXUNUSED(event))
 			VQMCMolecule::Compute(options, basis);
 
 			inExecution = false;
-		}).detach();
+		});
 }
 
 void VQMCMoleculeFrame::OnUpdateExecute(wxUpdateUIEvent& event)

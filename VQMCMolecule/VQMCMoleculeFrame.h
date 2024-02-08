@@ -43,6 +43,7 @@ private:
 	void OnTimer(wxTimerEvent& event);
 
 	wxRichTextCtrl* richTextCtrl;
+	std::thread computationThread;
 
 	wxDECLARE_EVENT_TABLE();
 };

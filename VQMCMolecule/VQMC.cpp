@@ -70,7 +70,6 @@ std::tuple<double, double, double> VQMC::SamplingFokkerPlanck(int thermalSteps, 
             if (cycle > thermalSteps)
             {
                 const double localE = wavefunction.LocalEnergy(beta);
-
                 const double ldb = wavefunction.log_deriv_beta_wf(beta);
 
                 logDerivBeta += ldb;

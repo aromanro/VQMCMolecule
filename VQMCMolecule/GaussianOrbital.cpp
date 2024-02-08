@@ -31,14 +31,14 @@ namespace Orbitals {
 
 	double GaussianOrbital::operator()(const Vector3D<double>& r) const
 	{
-		const Vector3D<double> R = r - center;
+		const Vector3D R(r - center);
 
 		return coeffProdNorm * pow(R.X, angularMomentum.l) * pow(R.Y, angularMomentum.m) * pow(R.Z, angularMomentum.n) * exp(-alpha * R * R);
 	}
 
 	Vector3D<double> GaussianOrbital::getGradient(const Vector3D<double>& r) const
 	{	
-		const Vector3D<double> R = r - center;
+		const Vector3D R(r - center);
 
 		const double pRX = pow(R.X, angularMomentum.l);
 		const double pRY = pow(R.Y, angularMomentum.m);
@@ -46,7 +46,7 @@ namespace Orbitals {
 		const double powProd = pRX * pRY * pRZ;
 		const double expaR2 = exp(-alpha * R * R);
 
-		const Vector3D<double> eD = -alpha * 2. * R;
+		const Vector3D eD(-alpha * 2. * R);
 
 		double valX = eD.X;
 		if (angularMomentum.l > 0)
@@ -60,7 +60,7 @@ namespace Orbitals {
 		if (angularMomentum.n > 0)
 			valZ += static_cast<double>(angularMomentum.n) / R.Z;
 
-		return coeffProdNorm * expaR2 * powProd * Vector3D<double>(valX, valY, valZ);
+		return coeffProdNorm * expaR2 * powProd * Vector3D(valX, valY, valZ);
 
 		// Numerical, for tests:
 		/*
@@ -78,7 +78,7 @@ namespace Orbitals {
 
 	double GaussianOrbital::getLaplacian(const Vector3D<double>& r) const
 	{
-		const Vector3D<double> R = r - center;
+		const Vector3D R(r - center);
 
 		const double pRX = pow(R.X, angularMomentum.l);
 		const double pRY = pow(R.Y, angularMomentum.m);
@@ -87,7 +87,7 @@ namespace Orbitals {
 		const double expaR2 = exp(-alpha * R * R);
 
 		const double twoalpha = 2. * alpha;
-		const Vector3D<double> eD = -twoalpha * R;
+		const Vector3D eD(-twoalpha * R);
 
 		double valX = eD.X;
 		if (angularMomentum.l > 0)

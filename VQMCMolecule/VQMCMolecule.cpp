@@ -38,8 +38,8 @@ void VQMCMolecule::Compute(const Options& opt, const Chemistry::Basis& basisSTOX
     int step = static_cast<int>(ceil(static_cast<double>(nrWalkers) / nrThreads));
     if (step < 1) step = 1;
     
-    int nrGradientDescentSteps = opt.firstStageGradientDescentSteps + opt.secondStageGradientDescentSteps + opt.thirdStageGradientDescentSteps;
-    int secondStageLimit = opt.firstStageGradientDescentSteps + opt.secondStageGradientDescentSteps;
+    const int nrGradientDescentSteps = opt.firstStageGradientDescentSteps + opt.secondStageGradientDescentSteps + opt.thirdStageGradientDescentSteps;
+    
 
     const double nuclearRepulsionEnergy = molecule.NuclearRepulsionEnergy();
     const int cyclesRefresh = opt.cyclesRefresh;
@@ -85,7 +85,7 @@ void VQMCMolecule::Compute(const Options& opt, const Chemistry::Basis& basisSTOX
             thermalSteps = opt.secondStageThermalSteps * NrE;
             cycleSteps = opt.secondStageStatsSteps * NrE;
         }
-        else if (i == secondStageLimit)
+        else if (const int secondStageLimit = opt.firstStageGradientDescentSteps + opt.secondStageGradientDescentSteps; i == secondStageLimit)
         {
             thermalSteps = opt.thirdStageThermalSteps * NrE;
             cycleSteps = opt.thirdStageStatsSteps * NrE;

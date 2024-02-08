@@ -64,12 +64,10 @@ namespace Orbitals {
 
 		for (auto &orbital : basisFunctions)
 		{
-			char c = static_cast<char>(toupper(orbital.AtomicOrbital()));
+			const char c = static_cast<char>(toupper(orbital.AtomicOrbital()));
 
 			if (std::string::npos == res.find(c))
-			{
 				res += c;
-			}
 		}
 
 		return res;

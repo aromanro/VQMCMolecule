@@ -94,7 +94,7 @@ unsigned int Systems::Molecule::GetMaxAngularMomentum()
 	unsigned int L = 0;
 
 	for (const auto &atom : atoms)
-			L = std::max(L, atom.GetMaxAngularMomentum());
+		L = std::max(L, atom.GetMaxAngularMomentum());
 
 	return L;
 }
@@ -134,10 +134,7 @@ void Systems::Molecule::Init()
 
 					if (totalElectrons < maxElectronsInSubshell)
 					{
-						if (totalElectrons > maxAlphaElectronsInSubshell)
-							atom.alphaElectrons += maxAlphaElectronsInSubshell;
-						else
-							atom.alphaElectrons += totalElectrons;
+						atom.alphaElectrons += totalElectrons > maxAlphaElectronsInSubshell ? maxAlphaElectronsInSubshell : totalElectrons;
 
 						break;
 					}

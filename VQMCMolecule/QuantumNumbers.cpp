@@ -24,6 +24,7 @@ char Orbitals::QuantumNumbers::QuantumNumbers::AtomicOrbital() const
 		case 3: return 'f';
 		case 4: return 'g';
 		case 5: return 'h';
+		default: break;
 	}
 
 	return -1;
