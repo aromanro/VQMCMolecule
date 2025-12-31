@@ -13,6 +13,15 @@ The refered formulae in the code are here: https://github.com/CompPhysics/Comput
 
 There is a description on the Computational Physics Blog: https://compphys.go.ro/variational-quantum-monte-carlo/
 
+### TOOLS
+
+The project compiles on Windows with Visual Studio 2026 (the code can be compiled with older versions starting with VS 2015, but it's currently maintained with VS 2026 and C++ 17 or higher).
+
+### LIBRARIES
+
+The program requires the typical VC++ runtime libraries.
+Additional library: wxWidgets https://wxwidgets.org/.
+
 ### PROGRAM IN ACTION
 
 [![Program video](https://img.youtube.com/vi/Fxb7nTo_dkM/0.jpg)](https://youtu.be/Fxb7nTo_dkM)
